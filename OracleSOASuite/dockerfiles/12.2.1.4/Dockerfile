@@ -14,7 +14,7 @@
 #
 # Pull base image
 # ---------------
-FROM oracle/fmw-infrastructure:12.2.1.3
+FROM oracle/fmw-infrastructure:12.2.1.4
 #
 # Maintainer
 # ----------
@@ -23,8 +23,8 @@ MAINTAINER Prashanth Nagaraja <prashanth.nagaraja@oracle.com>
 # Environment variables required for this build (do NOT change)
 # -------------------------------------------------------------
 USER root
-ENV FMW_JAR1=fmw_12.2.1.3.0_soa.jar \
-    FMW_JAR2=fmw_12.2.1.3.0_osb.jar
+ENV FMW_JAR1=fmw_12.2.1.4.0_soa.jar \
+    FMW_JAR2=fmw_12.2.1.4.0_osb.jar
 
 #
 # Copy files and packages for install

@@ -71,7 +71,7 @@ The above command starts a DB container attaching to a network and mounting a ho
 It maps the containers 1521 and 5500 port to respective host port such that the services can be accessible outside of localhost.
 
 
-## SOA Distributable version 12.2.1.3 Docker image Creation and Running
+## SOA Distributable version 12.2.1.4 Docker image Creation and Running
 
 To build a SOA image either you can start from building Oracle JDK and Oracle FMW Infrastrucure image or use the already available Oracle FMW Infrastructure image. The FMW Infrastructure image is available in the [Oracle Container Registry](https://container-registry.oracle.com), and can be pulled from there. If you plan to use the Oracle FMW Infrastructure image from the [Oracle Container Registry](https://container-registry.oracle.com), you can skip the next two steps and continue with "Building a Docker Image for SOA".
 
@@ -87,30 +87,30 @@ https://github.com/oracle/docker-images/tree/master/OracleJava/README.md
 
 Please refer [README.md](https://github.com/oracle/docker-images/blob/master/OracleFMWInfrastructure/README.md) under docker/OracleFMWInfrastructure for details on how to build Oracle FMW Infrastructure image.
 
-The Oracle FMW Infrastructure image created through above step need to be retagged from `container-registry.oracle.com/middleware/fmw-infrastructure:12.2.1.3`  to `middleware/fmw-infrastructure:12.2.1.3` before continuing with next steps.
+The Oracle FMW Infrastructure image created through above step need to be retagged from `container-registry.oracle.com/middleware/fmw-infrastructure:12.2.1.4`  to `middleware/fmw-infrastructure:12.2.1.4` before continuing with next steps.
 
-$ docker tag container-registry.oracle.com/middleware/fmw-infrastructure:12.2.1.3 oracle/fmw-infrastructure:12.2.1.3
+$ docker tag container-registry.oracle.com/middleware/fmw-infrastructure:12.2.1.4 oracle/fmw-infrastructure:12.2.1.4
 
 
 ## Building Docker Image for SOA
 
-IMPORTANT: To build the SOA image, you must first download the Oracle SOA Suite 12.2.1.3 binary and drop in folder `../OracleSOASuite/dockerfiles/12.2.1.3`. The binaries can be downloaded from the [Oracle Software Delivery Cloud](https://edelivery.oracle.com). Search for "Oracle SOA Suite" and download the `Oracle Fusion Middleware 12c (12.2.1.3.0) SOA Suite and Business Process Management` software. Extract the zip file and drop the `fmw_12.2.1.3.0_soa.jar` under `dockerfiles/12.2.1.3` for building SOA. To build the Oracle Service Bus image, search for 'Oracle Service Bus' and download the `Oracle Service Bus 12.2.1.3.0`, extract the zip file and drop the `fmw_12.2.1.3.0_osb.jar`.
+IMPORTANT: To build the SOA image, you must first download the Oracle SOA Suite 12.2.1.4 binary and drop in folder `../OracleSOASuite/dockerfiles/12.2.1.4`. The binaries can be downloaded from the [Oracle Software Delivery Cloud](https://edelivery.oracle.com). Search for "Oracle SOA Suite" and download the `Oracle Fusion Middleware 12c (12.2.1.4.0) SOA Suite and Business Process Management` software. Extract the zip file and drop the `fmw_12.2.1.4.0_soa.jar` under `dockerfiles/12.2.1.4` for building SOA. To build the Oracle Service Bus image, search for 'Oracle Service Bus' and download the `Oracle Service Bus 12.2.1.4.0`, extract the zip file and drop the `fmw_12.2.1.4.0_osb.jar`.
 
 * [Oracle Software Delivery Cloud](https://edelivery.oracle.com)
 
-$ sh buildDockerImage.sh -v 12.2.1.3
+$ sh buildDockerImage.sh -v 12.2.1.4
 
    Usage: buildDockerImage.sh -v [version]
    Builds a Docker Image for Oracle SOA Suite.
 
 
-Verify you now have the image `oracle/soa:12.2.1.3` in place with 
+Verify you now have the image `oracle/soa:12.2.1.4` in place with 
 
 $ docker images | grep "soa"
 
-The Oracle SOA Suite image created through above step need to be retagged from `middleware/soasuite/oracle/soasuite:12.2.1.3`  to `oracle/soa:12.2.1.3` before continuing with next steps.
+The Oracle SOA Suite image created through above step need to be retagged from `middleware/soasuite/oracle/soasuite:12.2.1.4`  to `oracle/soa:12.2.1.4` before continuing with next steps.
 
-$ docker tag middleware/soasuite/oracle/soasuite:12.2.1.3 oracle/soa:12.2.1.3
+$ docker tag middleware/soasuite/oracle/soasuite:12.2.1.4 oracle/soa:12.2.1.4
 
 ## Creating a container for AdminServer
 
@@ -140,7 +140,7 @@ To start a docker container with a SOA domain and the WebLogic AdminServer call 
 
 A sample docker run command is given below:
 
-     $docker run -i -t  --name soaas --network=SOANet -p 7001:7001  -v /scratch/DockerVolume/SOAVolume/SOA:/u01/oracle/user_projects   --env-file ./adminserver.env.list oracle/soa:12.2.1.3
+     $docker run -i -t  --name soaas --network=SOANet -p 7001:7001  -v /scratch/DockerVolume/SOAVolume/SOA:/u01/oracle/user_projects   --env-file ./adminserver.env.list oracle/soa:12.2.1.4
      
 >IMPORTANT: the resulting images will NOT have a domain pre-configured. But, it has the scripts to create and configure a soa domain >while creating a container out of the image.
      
@@ -178,7 +178,7 @@ To start a docker container for SOA server you can simply call `docker run` comm
 
 A sample docker run command is given below:
 
-    $ docker run -i -t  --name soams --network=SOANet -p 8001:8001   --volumes-from soaas   --env-file ./soaserver.env.list oracle/soa:12.2.1.3 "/u01/oracle/dockertools/startMS.sh"
+    $ docker run -i -t  --name soams --network=SOANet -p 8001:8001   --volumes-from soaas   --env-file ./soaserver.env.list oracle/soa:12.2.1.4 "/u01/oracle/dockertools/startMS.sh"
     
 Using `--volumes-from` reuses the volume created by the Admin container. In the above `docker run` command, `soaas` is the name of the Admin server container started in the previous step and we must use the same name used for the AdminServer to start the SOA managed server. 
 
