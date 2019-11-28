@@ -106,7 +106,7 @@ RUN  yum install -y hostname &&    \
 USER oracle
 COPY install/* /u01/
 RUN cd /u01 && \
-  $JAVA_HOME/bin/java -jar $FMW_JAR1 -silent -responseFile /u01/idm.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
+  $JAVA_HOME/bin/java -jar /u01/$FMW_JAR1 -silent -responseFile /u01/idm.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
   rm -fr /u01/*.jar /u01/*.response /u01/*.loc
 
 #
