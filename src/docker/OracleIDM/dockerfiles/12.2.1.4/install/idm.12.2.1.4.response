@@ -30,7 +30,7 @@ SOFTWARE_UPDATES_PROXY_USER=
 SOFTWARE_UPDATES_PROXY_PASSWORD=<SECURE VALUE>
 
 #The oracle home location. This can be an existing Oracle Home or a new Oracle Home
-ORACLE_HOME=/home/ivasi/Oracle/Middleware/Oracle_Home
+ORACLE_HOME=/u01/oracle
 
 #The federated oracle home locations. This should be an existing Oracle Home. Multiple values can be provided as comma seperated values
 FEDERATED_ORACLE_HOMES=
