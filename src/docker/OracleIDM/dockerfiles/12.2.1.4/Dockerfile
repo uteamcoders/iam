@@ -96,7 +96,7 @@ ENV FMW_JAR1=fmw_12.2.1.4.0_idmquickstart.jar \
 #
 # Copy files and packages for install
 # -----------------------------------
-ADD  $FMW_JAR1 $FMW_JAR2 /u01/
+ADD  install/$FMW_JAR1 install/$FMW_JAR2 /u01/
 COPY container-scripts/* /u01/oracle/dockertools/
 RUN  yum install -y hostname &&    \
      rm -rf /var/cache/yum &&      \
