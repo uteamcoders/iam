@@ -6,7 +6,7 @@
 #
 # ORACLE DOCKERFILES PROJECT
 # --------------------------
-# This is the Dockerfile for Oracle SOA Suite
+# This is the Dockerfile for Oracle IDM
 #
 # REQUIRED FILES TO BUILD THIS IMAGE
 # ----------------------------------

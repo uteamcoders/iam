@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to build a Docker image for Oracle SOA suite.
+# Script to build a Docker image for Oracle IDM.
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
 # Copyright (c) 2016-2017 Oracle and/or its affiliates. All rights reserved.
@@ -171,7 +171,7 @@ echo ""
 
 if [ $? -eq 0 ]; then
   cat << EOF
-INFO: Oracle SOA suite Docker Image for version: $VERSION 
+INFO: Oracle IDM Docker Image for version: $VERSION
       is ready to be extended.
       --> $IMAGE_NAME
 INFO: Build completed in $BUILD_ELAPSED seconds.

@@ -94,21 +94,21 @@ $ docker tag container-registry.oracle.com/middleware/fmw-infrastructure:12.2.1.
 
 ## Building Docker Image for SOA
 
-IMPORTANT: To build the SOA image, you must first download the Oracle SOA Suite 12.2.1.4 binary and drop in folder `../OracleSOASuite/dockerfiles/12.2.1.4`. The binaries can be downloaded from the [Oracle Software Delivery Cloud](https://edelivery.oracle.com). Search for "Oracle SOA Suite" and download the `Oracle Fusion Middleware 12c (12.2.1.4.0) SOA Suite and Business Process Management` software. Extract the zip file and drop the `fmw_12.2.1.4.0_soa.jar` under `dockerfiles/12.2.1.4` for building SOA. To build the Oracle Service Bus image, search for 'Oracle Service Bus' and download the `Oracle Service Bus 12.2.1.4.0`, extract the zip file and drop the `fmw_12.2.1.4.0_osb.jar`.
+IMPORTANT: To build the SOA image, you must first download the Oracle IDM 12.2.1.4 binary and drop in folder `../OracleSOASuite/dockerfiles/12.2.1.4`. The binaries can be downloaded from the [Oracle Software Delivery Cloud](https://edelivery.oracle.com). Search for "Oracle IDM" and download the `Oracle Fusion Middleware 12c (12.2.1.4.0) SOA Suite and Business Process Management` software. Extract the zip file and drop the `fmw_12.2.1.4.0_soa.jar` under `dockerfiles/12.2.1.4` for building SOA. To build the Oracle Service Bus image, search for 'Oracle Service Bus' and download the `Oracle Service Bus 12.2.1.4.0`, extract the zip file and drop the `fmw_12.2.1.4.0_osb.jar`.
 
 * [Oracle Software Delivery Cloud](https://edelivery.oracle.com)
 
 $ sh buildDockerImage.sh -v 12.2.1.4
 
    Usage: buildDockerImage.sh -v [version]
-   Builds a Docker Image for Oracle SOA Suite.
+   Builds a Docker Image for Oracle IDM.
 
 
 Verify you now have the image `oracle/soa:12.2.1.4` in place with 
 
 $ docker images | grep "soa"
 
-The Oracle SOA Suite image created through above step need to be retagged from `middleware/soasuite/oracle/soasuite:12.2.1.4`  to `oracle/soa:12.2.1.4` before continuing with next steps.
+The Oracle IDM image created through above step need to be retagged from `middleware/soasuite/oracle/soasuite:12.2.1.4`  to `oracle/soa:12.2.1.4` before continuing with next steps.
 
 $ docker tag middleware/soasuite/oracle/soasuite:12.2.1.4 oracle/soa:12.2.1.4
 
