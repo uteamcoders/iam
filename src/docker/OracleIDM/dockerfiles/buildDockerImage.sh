@@ -124,7 +124,7 @@ fi
 cd ${THEDIR}
 
 checkFilePackages
-checksumPackages
+# checksumPackages
 
 # Proxy settings - Set your own proxy environment
 if [ "${http_proxy}" != "" ]; then
