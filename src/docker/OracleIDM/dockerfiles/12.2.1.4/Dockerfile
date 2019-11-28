@@ -14,7 +14,7 @@
 #
 # Pull base image
 # ---------------
-FROM oracle/serverjre:8 as builder
+FROM store/oracle/serverjre:8 as builder
 
 # Maintainer
 # ----------
@@ -52,7 +52,7 @@ USER oracle
 #    rm -rf /u01/oracle/cfgtoollogs
 
 # Final image stage
-FROM oracle/serverjre:8
+FROM store/oracle/serverjre:8
 ENV ORACLE_HOME=/u01/oracle \
     VOLUME_DIR=/u01/oracle/user_projects \
     SCRIPT_FILE=/u01/oracle/container-scripts/* \
