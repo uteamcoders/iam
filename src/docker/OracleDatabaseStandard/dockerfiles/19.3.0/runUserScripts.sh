@@ -22,7 +22,7 @@ fi;
 if [ -d "$SCRIPTS_ROOT" ] && [ -n "$(ls -A $SCRIPTS_ROOT)" ]; then
 
   echo "";
-  echo "Executing user defined scripts"
+  echo "Executing IDM scripts as in https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.3/sysrs/system-requirements-and-specifications.html#GUID-0CFB01B2-2571-41C7-8553-4046D91E3C38"
 
   for f in $SCRIPTS_ROOT/*; do
       case "$f" in
