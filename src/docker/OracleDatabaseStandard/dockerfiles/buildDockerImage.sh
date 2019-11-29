@@ -143,7 +143,7 @@ if [ "$VERSION" == "12.1.0.2" ] || [ "$VERSION" == "11.2.0.2" ] || [ "$VERSION" 
 fi;
 
 # Oracle Database Image Name
-IMAGE_NAME="oracle/database:$VERSION-$EDITION"
+IMAGE_NAME="oracle/idm/database:$VERSION-$EDITION"
 
 # Go into version folder
 cd "$VERSION" || {
