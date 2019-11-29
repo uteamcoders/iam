@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 SCRIPTS_ROOT="$ORACLE_HOME/rdbms/admin";
 
 # Check whether parameter has been passed on
@@ -13,11 +13,9 @@ if [ -d "$SCRIPTS_ROOT" ] && [ -n "$(ls -A $SCRIPTS_ROOT)" ]; then
 
   echo "";
   echo "Executing user defined scripts"
-
-  for f in [dbmspool.sql,prvtpool.plb,xaview.sql]; do
-      case "$f" in
-          *.sql)    echo "$0: running $f"; echo "exit" | $ORACLE_HOME/bin/sqlplus -s "/ as sysdba" @"$f"; echo ;;
-      esac
+  idm_scripts=("dbmspool.sql" "prvtpool.plb" "xaview.sql");
+  for f in "${idm_scripts[@]}"; do
+      echo "$0: running $f"; echo "exit" | $ORACLE_HOME/bin/sqlplus -s "/ as sysdba" @"$ORACLE_HOME/rdbms/admin/$f";
       echo "";
   done
 
