@@ -35,12 +35,9 @@ RUN mkdir -p /u01 && \
 
 # Environment variables required for this build (do NOT change)
 # -------------------------------------------------------------
-#ENV FMW_PKG=fmw_12.2.1.4.0_infrastructure_Disk1_1of1.zip \
-#    FMW_JAR=fmw_12.2.1.4.0_infrastructure.jar
-#
 ## Copy packages
 ## -------------
-#COPY $FMW_PKG install.file oraInst.loc /u01/
+COPY install.file oraInst.loc /u01/
 RUN chown oracle:oracle -R /u01
 
 # Install
@@ -106,6 +103,10 @@ RUN  yum install -y hostname &&    \
 #
 USER oracle
 COPY install/* /u01/
+RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.6.0/weblogic-deploy.zip -o /u01/weblogic-deploy.zip && \
+    unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy && \
+    find . -type f -iname "*.sh" -exec chmod +x {} \;
+
 RUN cd /u01 && \
   $JAVA_HOME/bin/java -jar /u01/$FMW_JAR1 -silent -responseFile /u01/idm.12.2.1.4.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
   rm -fr /u01/*.jar /u01/*.response /u01/*.loc
@@ -115,3 +116,6 @@ RUN cd /u01 && \
 #
 WORKDIR $ORACLE_HOME
 CMD ["/u01/oracle/dockertools/createDomainAndStart.sh"]
+
+
+# weblogic-deploy/bin/discoverDomain.sh -oracle_home /home/ivasi/Oracle/Middleware/Oracle_Home -domain_home /home/ivasi/Oracle/Middleware/Oracle_Home/user_projects/domains/idm_domain -archive_file IdmDomain.zip -model_file IdmDomain.yaml

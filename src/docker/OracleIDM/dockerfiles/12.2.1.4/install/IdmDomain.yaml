@@ -1,0 +1,1967 @@
+domainInfo:
+    AdminUserName: '@@AdminUserName@@'
+    AdminPassword: '@@AdminPassword@@'
+topology:
+    Name: idm_domain
+    ParallelDeployApplicationModules: true
+    JTA:
+        TimeoutSeconds: 1200
+    NMProperties:
+        JavaHome: '@@JAVA_HOME@@'
+        LogFile: '@@DOMAIN_HOME@@/nodemanager/nodemanager.log'
+        DomainsFile: '@@DOMAIN_HOME@@/nodemanager/nodemanager.domains'
+        NodeManagerHome: '@@DOMAIN_HOME@@/nodemanager'
+        weblogic.StartScriptName: startWebLogic.sh
+    Cluster:
+        oim_cluster:
+            CoherenceClusterSystemResource: defaultCoherenceCluster
+            ClusterAddress: '@@HOST@@:14000'
+        soa_cluster:
+            CoherenceClusterSystemResource: defaultCoherenceCluster
+            ClusterAddress: '@@HOST@@:7003'
+    Server:
+        AdminServer:
+            ListenPort: 7001
+            TransactionLogJDBCStore:
+                DataSource: WLSSchemaDataSource
+                PrefixName: TLOG_ADMINSERVER
+                Enabled: true
+            WebServer:
+                WebServerLog:
+                    LogFileFormat: extended
+                    ELFFields: 'date time cs-method ctx-ecid ctx-rid cs-uri sc-status bytes'
+        oim_server1:
+            ListenPort: 14000
+            CoherenceClusterSystemResource: defaultCoherenceCluster
+            StuckThreadMaxTime: 1500
+            Cluster: oim_cluster
+            JTAMigratableTarget:
+                Cluster: oim_cluster
+                UserPreferredServer: oim_server1
+            TransactionLogJDBCStore:
+                DataSource: WLSSchemaDataSource
+                PrefixName: TLOG_OIM_SERVER1
+                Enabled: true
+            WebServer:
+                WebServerLog:
+                    LogFileFormat: extended
+                    ELFFields: 'date time cs-method ctx-ecid ctx-rid cs-uri sc-status bytes'
+        soa_server1:
+            ListenPort: 7003
+            CoherenceClusterSystemResource: defaultCoherenceCluster
+            Cluster: soa_cluster
+            JTAMigratableTarget:
+                Cluster: soa_cluster
+                UserPreferredServer: soa_server1
+            TransactionLogJDBCStore:
+                DataSource: WLSSchemaDataSource
+                PrefixName: TLOG_SOA_SERVER1
+                Enabled: true
+            WebServer:
+                WebServerLog:
+                    LogFileFormat: extended
+                    ELFFields: 'date time cs-method ctx-ecid ctx-rid cs-uri sc-status bytes'
+    MigratableTarget:
+        oim_server1 (migratable):
+            Cluster: oim_cluster
+            MigrationPolicy: manual
+            UserPreferredServer: oim_server1
+            Notes: This is a system generated default migratable target for a server. Do not delete manually.
+        soa_server1 (migratable):
+            Cluster: soa_cluster
+            MigrationPolicy: manual
+            UserPreferredServer: soa_server1
+            Notes: This is a system generated default migratable target for a server. Do not delete manually.
+    ServerTemplate:
+        'soa-server-template':
+            ListenPort: 7100
+            SSL:
+                ListenPort: 8100
+        'oim-server-template':
+            ListenPort: 7100
+            SSL:
+                ListenPort: 8100
+        'wsm-cache-server-template':
+            ListenPort: 7100
+            SSL:
+                ListenPort: 8100
+        'wsmpm-server-template':
+            ListenPort: 7100
+            SSL:
+                ListenPort: 8100
+    SecurityConfiguration:
+        NodeManagerPasswordEncrypted: '@@AdminUserName@@'
+        CredentialEncrypted: '@@AdminPassword@@'
+        UseKSSForDemo: true
+        Realm:
+            myrealm:
+                Adjudicator:
+                    DefaultAdjudicator:
+                        DefaultAdjudicator:
+                AuthenticationProvider:
+                    Trust Service Identity Asserter:
+                        weblogic.management.security.ProviderMBean:
+                    DefaultIdentityAsserter:
+                        DefaultIdentityAsserter:
+                            ActiveType: [ AuthenticatedUser, 'weblogic-jwt-token' ]
+                Authorizer:
+                    XACMLAuthorizer:
+                        XACMLAuthorizer:
+                            PolicyDeploymentEnabled: true
+                CertPathProvider:
+                    WebLogicCertPathProvider:
+                        WebLogicCertPathProvider:
+                CredentialMapper:
+                    DefaultCredentialMapper:
+                        DefaultCredentialMapper:
+                PasswordValidator:
+                    SystemPasswordValidator:
+                        SystemPasswordValidator:
+                RoleMapper:
+                    XACMLRoleMapper:
+                        XACMLRoleMapper:
+resources:
+    SelfTuning:
+        Capacity:
+            analytics_maxEventsToBuffer:
+                Count: 100
+                Target: soa_cluster
+        FairShareRequestClass:
+            soa_fairShare_20:
+                FairShare: 20
+                Target: soa_cluster
+            soa_fairShare_80:
+                FairShare: 80
+                Target: soa_cluster
+        MaxThreadsConstraint:
+            SOAIncomingRequests_maxThreads:
+                Count: 60
+                Target: soa_cluster
+            SOAInternalProcessing_maxThreads:
+                Count: 150
+                Target: soa_cluster
+            default_EdnConsumer_maxThreads_3:
+                Count: 3
+                Target: soa_cluster
+            'MaxThreadsConstraint-20':
+                Count: 20
+                Target: oim_cluster
+            'MaxThreadsConstraint-80':
+                Count: 80
+                Target: oim_cluster
+            'MaxThreadsConstraint-10':
+                Count: 10
+                Target: oim_cluster
+            'MaxThreadsConstraint-5':
+                Count: 5
+                Target: oim_cluster
+            'MaxThreadsConstraint-6':
+                Count: 6
+                Target: oim_cluster
+            'MaxThreadsConstraint-11':
+                Count: 11
+                Target: oim_cluster
+        MinThreadsConstraint:
+            default_dspSystem_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_dspInvoke_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_dspNonBlock_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_dspEngine_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_MediatorParallelRouting_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_MediatorErrorHandling_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_ResequencerProcessing_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_bpmnSystem_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_bpmnInvoke_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_bpmnNonBlock_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_bpmnEngine_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            SOA_Request_WM_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            default_EdnConsumer_minThreads_1:
+                Count: 1
+                Target: soa_cluster
+            'MinThreadsConstraint-0':
+                Count: 0
+                Target: oim_cluster
+        WorkManager:
+            wm/SOAWorkManager:
+                Target: soa_cluster
+                ApplicationScope: false
+            SOA_Default_WM:
+                Target: soa_cluster
+                ApplicationScope: false
+            SOA_DataSourceBound_WM:
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                Target: soa_cluster
+                ApplicationScope: false
+            SOA_Notification_WM:
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                Target: soa_cluster
+                ApplicationScope: false
+            SOA_Request_WM:
+                MinThreadsConstraint: SOA_Request_WM_minThreads_1
+                MaxThreadsConstraint: SOAIncomingRequests_maxThreads
+                Target: soa_cluster
+                ApplicationScope: false
+            SOA_EDN_WM:
+                MinThreadsConstraint: default_EdnConsumer_minThreads_1
+                MaxThreadsConstraint: SOAIncomingRequests_maxThreads
+                Target: soa_cluster
+                ApplicationScope: false
+            default_Adapters:
+                Target: soa_cluster
+                ApplicationScope: false
+            default_dspSystem:
+                MinThreadsConstraint: default_dspSystem_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_20
+                Target: soa_cluster
+                ApplicationScope: false
+            default_dspInvoke:
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_20
+                Target: soa_cluster
+                ApplicationScope: false
+            default_dspNonBlock:
+                MinThreadsConstraint: default_dspNonBlock_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_20
+                Target: soa_cluster
+                ApplicationScope: false
+            default_dspEngine:
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_80
+                Target: soa_cluster
+                ApplicationScope: false
+            default_MediatorParallelRouting:
+                MinThreadsConstraint: default_MediatorParallelRouting_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_80
+                Target: soa_cluster
+                ApplicationScope: false
+            default_MediatorErrorHandling:
+                MinThreadsConstraint: default_MediatorErrorHandling_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_80
+                Target: soa_cluster
+                ApplicationScope: false
+            default_ResequencerProcessing:
+                MinThreadsConstraint: default_ResequencerProcessing_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_80
+                Target: soa_cluster
+                ApplicationScope: false
+            default_Analytics:
+                FairShareRequestClass: soa_fairShare_20
+                Capacity: analytics_maxEventsToBuffer
+                Target: soa_cluster
+                ApplicationScope: false
+            default_bpmnSystem:
+                MinThreadsConstraint: default_bpmnSystem_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_20
+                Target: soa_cluster
+                ApplicationScope: false
+            default_bpmnInvoke:
+                MinThreadsConstraint: default_bpmnInvoke_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_20
+                Target: soa_cluster
+                ApplicationScope: false
+            default_bpmnNonBlock:
+                MinThreadsConstraint: default_bpmnNonBlock_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_20
+                Target: soa_cluster
+                ApplicationScope: false
+            default_bpmnEngine:
+                MinThreadsConstraint: default_bpmnEngine_minThreads_1
+                MaxThreadsConstraint: SOAInternalProcessing_maxThreads
+                FairShareRequestClass: soa_fairShare_80
+                Target: soa_cluster
+                ApplicationScope: false
+            OIMUIWorkManager:
+                MaxThreadsConstraint: 'MaxThreadsConstraint-20'
+                Target: oim_cluster
+            OIMMDBWorkManager:
+                MaxThreadsConstraint: 'MaxThreadsConstraint-80'
+                Target: oim_cluster
+            OIMWorkManager:
+                MinThreadsConstraint: 'MinThreadsConstraint-0'
+                MaxThreadsConstraint: 'MaxThreadsConstraint-11'
+                Target: oim_cluster
+            OIMAuditWorkManager:
+                MaxThreadsConstraint: 'MaxThreadsConstraint-5'
+                Target: oim_cluster
+            OIMAccessPolicyWorkManager:
+                MinThreadsConstraint: 'MinThreadsConstraint-0'
+                MaxThreadsConstraint: 'MaxThreadsConstraint-6'
+                Target: oim_cluster
+            OIMRoleGrantRevokeWorkManager:
+                MinThreadsConstraint: 'MinThreadsConstraint-0'
+                MaxThreadsConstraint: 'MaxThreadsConstraint-6'
+                Target: oim_cluster
+    StartupClass:
+        WSM Startup Class:
+            ClassName: oracle.wsm.config.WSMServerStartupShutdownProvider
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        Web Services Startup Class:
+            LoadBeforeAppActivation: true
+            DeploymentOrder: 150
+            LoadBeforeAppDeployments: true
+            ClassName: oracle.j2ee.ws.server.WebServiceServerStartup
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        JRF Startup Class:
+            LoadBeforeAppActivation: true
+            DeploymentOrder: 110
+            LoadBeforeAppDeployments: true
+            ClassName: oracle.jrf.wls.JRFStartup
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'ODL-Startup':
+            LoadBeforeAppActivation: true
+            DeploymentOrder: 145
+            LoadBeforeAppDeployments: true
+            ClassName: oracle.core.ojdl.weblogic.ODLConfiguration
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'DMS-Startup':
+            LoadBeforeAppActivation: true
+            DeploymentOrder: 150
+            LoadBeforeAppDeployments: true
+            ClassName: oracle.dms.wls.DMSStartup
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        AWT Application Context Startup Class:
+            LoadBeforeAppActivation: true
+            DeploymentOrder: 150
+            LoadBeforeAppDeployments: true
+            ClassName: oracle.jrf.AppContextStartup
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        SOAStartupClass:
+            LoadBeforeAppActivation: true
+            DeploymentOrder: 100
+            LoadBeforeAppDeployments: true
+            ClassName: oracle.bpel.services.common.util.GenerateBPMCryptoKey
+            Target: soa_cluster
+    ShutdownClass:
+        DMSShutdown:
+            DeploymentOrder: 150
+            ClassName: oracle.dms.wls.DMSShutdown
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+    WebAppContainer:
+        WAPEnabled: 0
+        ServletAuthenticationFormURL: true
+        ServletReloadCheckSecs: 1
+        ChangeSessionIDOnAuthentication: true
+        MimeMappingFile: ./config/mimemappings.properties
+        AuthCookieEnabled: true
+        WorkContextPropagationEnabled: true
+    JDBCSystemResource:
+        WLSSchemaDataSource:
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/WLSSchemaDataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    TestTableName: SQL ISVALID
+                    MaxCapacity: 75
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/WLSSchemaDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_WLS_RUNTIME
+        LocalSvcTblDataSource:
+            Target: 'oim_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/LocalSvcTblDataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 0
+                    MaxCapacity: 200
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/LocalSvcTblDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_STB
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        SendStreamAsBlob:
+                            Value: true
+                        weblogic.jdbc.crossPartitionEnabled:
+                            Value: true
+        'opss-data-source':
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/opss-datasource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    TestTableName: SQL ISVALID
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/OpssDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_OPSS
+        'opss-audit-viewDS':
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/opss-auditview-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    TestTableName: SQL ISVALID
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/AuditViewDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_IAU_VIEWER
+        'opss-audit-DBDS':
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/opss-audit-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    TestTableName: SQL ISVALID
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/AuditAppendDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_IAU_APPEND
+        'mds-owsm':
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/mds-owsm-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 0
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/mds/owsm
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_MDS
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 120000
+                        SendStreamAsBlob:
+                            Value: true
+        OraSDPMDataSource:
+            Target: soa_cluster
+            DescriptorFileName: 'jdbc/OraSDPMDataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 0
+                    MaxCapacity: 300
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: TwoPhaseCommit
+                    JNDIName: jdbc/OraSDPMDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.xa.client.OracleXADataSource
+                    Properties:
+                        user:
+                            Value: DEV_UMS
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        SendStreamAsBlob:
+                            Value: true
+        SOADataSource:
+            Target: soa_cluster
+            DescriptorFileName: 'jdbc/SOADataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 10
+                    MaxCapacity: 300
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: TwoPhaseCommit
+                    JNDIName: jdbc/SOADataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.xa.client.OracleXADataSource
+                    Properties:
+                        user:
+                            Value: DEV_SOAINFRA
+                JDBCXAParams:
+                    KeepXaConnTillTxComplete: true
+                    XaRetryIntervalSeconds: 60
+                    XaRetryDurationSeconds: 300
+        EDNDataSource:
+            Target: soa_cluster
+            DescriptorFileName: 'jdbc/EDNDataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 10
+                    MaxCapacity: 20
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: TwoPhaseCommit
+                    JNDIName: jdbc/EDNDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.xa.client.OracleXADataSource
+                    Properties:
+                        user:
+                            Value: DEV_SOAINFRA
+                JDBCXAParams:
+                    KeepXaConnTillTxComplete: true
+                    XaRetryIntervalSeconds: 60
+                    XaRetryDurationSeconds: 300
+        EDNLocalTxDataSource:
+            Target: soa_cluster
+            DescriptorFileName: 'jdbc/EDNLocalTxDataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 10
+                    MaxCapacity: 20
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/EDNLocalTxDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_SOAINFRA
+        SOALocalTxDataSource:
+            Target: soa_cluster
+            DescriptorFileName: 'jdbc/SOALocalTxDataSource-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 10
+                    MaxCapacity: 300
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/SOALocalTxDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_SOAINFRA
+        'mds-soa':
+            Target: 'soa_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/mds-soa-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    InitialCapacity: 0
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    TestTableName: SQL ISVALID
+                    TestFrequencySeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 10
+                    MaxCapacity: 50
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/mds/MDS_LocalTxDataSource
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_MDS
+                        SendStreamAsBlob:
+                            Value: true
+        oimOperationsDB:
+            Target: 'soa_cluster,oim_cluster'
+            DescriptorFileName: 'jdbc/oimOperationsDB-0237-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    StatementCacheSize: 10
+                    InitialCapacity: 32
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    MinCapacity: 32
+                    TestTableName: SQL SELECT 1 FROM DUAL
+                    TestFrequencySeconds: 300
+                    InactiveConnectionTimeoutSeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 30
+                    StatementCacheType: LRU
+                    MaxCapacity: 50
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: TwoPhaseCommit
+                    JNDIName: jdbc/operationsDB
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.xa.client.OracleXADataSource
+                    Properties:
+                        user:
+                            Value: DEV_OIM
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        oracle.net.READ_TIMEOUT:
+                            Value: 300000
+                JDBCXAParams:
+                    KeepXaConnTillTxComplete: true
+                    XaRetryIntervalSeconds: 60
+                    XaTransactionTimeout: 1260
+                    XaRetryDurationSeconds: 300
+        soaOIMLookupDB:
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+            DescriptorFileName: 'jdbc/soaOIMLookupDB-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    StatementCacheSize: 10
+                    InitialCapacity: 20
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    MinCapacity: 20
+                    TestTableName: SQL SELECT 1 FROM DUAL
+                    TestFrequencySeconds: 300
+                    InactiveConnectionTimeoutSeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 30
+                    StatementCacheType: LRU
+                    MaxCapacity: 20
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: TwoPhaseCommit
+                    JNDIName: jdbc/soaOIMLookupDB
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.xa.client.OracleXADataSource
+                    Properties:
+                        user:
+                            Value: DEV_OIM
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        oracle.net.READ_TIMEOUT:
+                            Value: 300000
+                JDBCXAParams:
+                    KeepXaConnTillTxComplete: true
+                    XaRetryIntervalSeconds: 60
+                    XaRetryDurationSeconds: 300
+        'mds-oim':
+            Target: oim_cluster
+            DescriptorFileName: 'jdbc/oimMDS-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    StatementCacheSize: 10
+                    InitialCapacity: 15
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    MinCapacity: 15
+                    TestTableName: SQL SELECT 1 FROM DUAL
+                    TestFrequencySeconds: 300
+                    InactiveConnectionTimeoutSeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 30
+                    StatementCacheType: LRU
+                    MaxCapacity: 15
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/mds/MDS_REPOS
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_MDS
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        oracle.net.READ_TIMEOUT:
+                            Value: 300000
+        oimJMSStoreDS:
+            Target: oim_cluster
+            DescriptorFileName: 'jdbc/oimJMSStoreDS-0269-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    StatementCacheSize: 10
+                    InitialCapacity: 15
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    MinCapacity: 15
+                    TestTableName: SQL SELECT 1 FROM DUAL
+                    TestFrequencySeconds: 300
+                    InactiveConnectionTimeoutSeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 30
+                    StatementCacheType: LRU
+                    MaxCapacity: 15
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/oimJMSStoreDS
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_OIM
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        oracle.net.READ_TIMEOUT:
+                            Value: 300000
+        ApplicationDB:
+            Target: oim_cluster
+            DescriptorFileName: 'jdbc/oimApplicationDBDS-jdbc.xml'
+            JdbcResource:
+                JDBCConnectionPoolParams:
+                    StatementCacheSize: 10
+                    InitialCapacity: 50
+                    CapacityIncrement: 1
+                    TestConnectionsOnReserve: true
+                    ConnectionCreationRetryFrequencySeconds: 10
+                    MinCapacity: 50
+                    TestTableName: SQL SELECT 1 FROM DUAL
+                    TestFrequencySeconds: 300
+                    InactiveConnectionTimeoutSeconds: 300
+                    SecondsToTrustAnIdlePoolConnection: 30
+                    StatementCacheType: LRU
+                    MaxCapacity: 50
+                JDBCDataSourceParams:
+                    JNDIName: jdbc/ApplicationDBDS
+                JDBCDriverParams:
+                    URL: '@@CONNECT_STR@@'
+                    PasswordEncrypted: '--FIX ME--'
+                    DriverName: oracle.jdbc.OracleDriver
+                    Properties:
+                        user:
+                            Value: DEV_OIM
+                        oracle.net.CONNECT_TIMEOUT:
+                            Value: 10000
+                        oracle.net.READ_TIMEOUT:
+                            Value: 300000
+    ForeignJNDIProvider:
+        'ForeignJNDIProvider-SOA':
+            PasswordEncrypted: '@@AdminPassword@@'
+            InitialContextFactory: weblogic.jndi.WLInitialContextFactory
+            User: '@@AdminUserName@@'
+            Target: oim_cluster
+            ProviderUrl: 'cluster:t3://soa_cluster'
+            ForeignJNDILink:
+                TaskQueryService:
+                    RemoteJNDIName: TaskQueryService
+                    LocalJNDIName: TaskQueryService
+                UserMetadataService:
+                    RemoteJNDIName: UserMetadataService
+                    LocalJNDIName: UserMetadataService
+                TaskReportServiceBean:
+                    RemoteJNDIName: TaskReportServiceBean
+                    LocalJNDIName: TaskReportServiceBean
+                TaskEvidenceServiceBean:
+                    RemoteJNDIName: TaskEvidenceServiceBean
+                    LocalJNDIName: TaskEvidenceServiceBean
+                RuntimeConfigService:
+                    RemoteJNDIName: RuntimeConfigService
+                    LocalJNDIName: RuntimeConfigService
+                ejb/bpel/services/workflow/TaskServiceBean:
+                    RemoteJNDIName: ejb/bpel/services/workflow/TaskServiceBean
+                    LocalJNDIName: ejb/bpel/services/workflow/TaskServiceBean
+                ejb/bpel/services/workflow/TaskMetadataServiceBean:
+                    RemoteJNDIName: ejb/bpel/services/workflow/TaskMetadataServiceBean
+                    LocalJNDIName: ejb/bpel/services/workflow/TaskMetadataServiceBean
+                /ejb/bpel/services/workflow/TaskServiceGlobalTransactionBean:
+    FileStore:
+        'mds-owsm':
+            Directory: 'wlsdeploy/stores/mds-owsm/'
+        'mds-soa':
+            Directory: 'wlsdeploy/stores/mds-soa/'
+            Target: AdminServer
+        JRFWSAsyncFileStore_auto_1:
+            Directory: wlsdeploy/stores/JRFWSAsyncFileStore_auto_1/
+            Target: oim_server1 (migratable)
+        UMSJMSFileStore:
+            Directory: wlsdeploy/stores/UMSJMSFileStore/
+        BPMJMSFileStore:
+            Directory: wlsdeploy/stores/BPMJMSFileStore/
+        SOAJMSFileStore:
+            Directory: wlsdeploy/stores/SOAJMSFileStore/
+        OIMJMSFileStore:
+            Directory: wlsdeploy/stores/OIMJMSFileStore/
+    JDBCStore:
+        'JDBCStore-OIM_auto_1':
+            DataSource: WLSSchemaDataSource
+            PrefixName: idm_1
+            Target: oim_server1 (migratable)
+        UMSJMSJDBCStore_auto_1:
+            DataSource: WLSSchemaDataSource
+            PrefixName: idm_2
+            Target: soa_server1 (migratable)
+        BPMJMSJDBCStore_auto_1:
+            DataSource: WLSSchemaDataSource
+            PrefixName: idm_3
+            Target: soa_server1 (migratable)
+        SOAJMSJDBCStore_auto_1:
+            DataSource: WLSSchemaDataSource
+            PrefixName: idm_4
+            Target: soa_server1 (migratable)
+    JMSServer:
+        OIMJMSServer_auto_1:
+            MessageBufferSize: 200
+            PersistentStore: 'JDBCStore-OIM_auto_1'
+            Target: oim_server1 (migratable)
+            MessagesMaximum: 400000
+            BlockingSendPolicy: FIFO
+        JRFWSAsyncJmsServer_auto_1:
+            PersistentStore: JRFWSAsyncFileStore_auto_1
+            Target: oim_server1 (migratable)
+            MessagesMaximum: 200000
+        UMSJMSServer_auto_1:
+            PersistentStore: UMSJMSJDBCStore_auto_1
+            Target: soa_server1 (migratable)
+        BPMJMSServer_auto_1:
+            MessageBufferSize: 100000
+            PersistentStore: BPMJMSJDBCStore_auto_1
+            Target: soa_server1 (migratable)
+        SOAJMSServer_auto_1:
+            PersistentStore: SOAJMSJDBCStore_auto_1
+            Target: soa_server1 (migratable)
+    JMSSystemResource:
+        JRFWSAsyncJmsModule:
+            Target: oim_cluster
+            DescriptorFileName: 'jms/jrfwsasyncjmsmodule-jms.xml'
+            SubDeployment:
+                JRFWS_JMS_MODULE_SUBDEPLOYMENT_JRFWSJMSServer_auto_1:
+                    Target: JRFWSAsyncJmsServer_auto_1
+            JmsResource:
+                UniformDistributedQueue:
+                    dist_JRFWSAsyncResponseQueue_auto_1:
+                        SubDeploymentName: JRFWS_JMS_MODULE_SUBDEPLOYMENT_JRFWSJMSServer_auto_1
+                        JNDIName: oracle.j2ee.ws.server.async.DefaultResponseQueue
+                    dist_JRFWSAsyncRequestQueue_auto_1:
+                        SubDeploymentName: JRFWS_JMS_MODULE_SUBDEPLOYMENT_JRFWSJMSServer_auto_1
+                        JNDIName: oracle.j2ee.ws.server.async.DefaultRequestQueue
+                    dist_JRFWSAsyncRequestErrorQueue_auto_1:
+                        SubDeploymentName: JRFWS_JMS_MODULE_SUBDEPLOYMENT_JRFWSJMSServer_auto_1
+                        JNDIName: oracle.j2ee.ws.server.async.DefaultRequestErrorQueue
+                    dist_JRFWSAsyncResponseErrorQueue_auto_1:
+                        SubDeploymentName: JRFWS_JMS_MODULE_SUBDEPLOYMENT_JRFWSJMSServer_auto_1
+                        JNDIName: oracle.j2ee.ws.server.async.DefaultResponseErrorQueue
+        UMSJMSSystemResource:
+            Target: soa_cluster
+            DescriptorFileName: 'jms/UMSJMSSystemResource-jms.xml'
+            SubDeployment:
+                UMSJMSSubDeployment_auto_1:
+                    Target: UMSJMSServer_auto_1
+            JmsResource:
+                ConnectionFactory:
+                    OraSDPM/QueueConnectionFactory:
+                        JNDIName: OraSDPM/QueueConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            DefaultRedeliveryDelay: 400
+                            DefaultDeliveryMode: Persistent
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                DestinationKey:
+                    Priority:
+                        SortOrder: Descending
+                        KeyType: Int
+                        Property: JMSPriority
+                UniformDistributedQueue:
+                    dist_OraSDPM/Queues/OraSDPMEngineRcvQ1_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMEngineRcvQ1
+                    dist_OraSDPM/Queues/OraSDPMEngineSndQ1_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMEngineSndQ1
+                    dist_OraSDPM/Queues/OraSDPMDriverDefSndQ1_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMDriverDefSndQ1
+                    dist_OraSDPM/Queues/OraSDPMAppDefRcvQ1_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMAppDefRcvQ1
+                    dist_OraSDPM/Queues/OraSDPMAppDefRcvErrorQ1_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMAppDefRcvErrorQ1
+                    dist_OraSDPM/Queues/OraSDPMWSRcvQ1_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMWSRcvQ1
+                    dist_OraSDPM/Queues/OraSDPMEnginePendingRcvQ_auto_1:
+                        SubDeploymentName: UMSJMSSubDeployment_auto_1
+                        JNDIName: OraSDPM/Queues/OraSDPMEnginePendingRcvQ
+        UMSAQJMSSystemResource:
+            DescriptorFileName: 'jms/UMSAQJMSSystemResource-jms.xml'
+            JmsResource:
+                ForeignServer:
+                    UMSAQJMSForeignServer:
+                        InitialContextFactory: oracle.jms.AQjmsInitialContextFactory
+                        DefaultTargetingEnabled: true
+                        ForeignConnectionFactory:
+                            OraSDPM/QueueConnectionFactory:
+                                RemoteJndiName: XAQueueConnectionFactory
+                                LocalJNDIName: OraSDPM/QueueConnectionFactory
+                        ForeignDestination:
+                            OraSDPM/Queues/OraSDPMAppDefRcvQ1:
+                                RemoteJndiName: Queues/OraSDPMAppDefRcvQ1
+                                LocalJNDIName: OraSDPM/Queues/OraSDPMAppDefRcvQ1
+                            OraSDPM/Queues/OraSDPMAppDefRcvErrorQ1:
+                                RemoteJndiName: Queues/AQ$_OraSDPMAppDefRcvT1_E
+                                LocalJNDIName: OraSDPM/Queues/OraSDPMAppDefRcvErrorQ1
+                            OraSDPM/Queues/OraSDPMDriverDefSndQ1:
+                                RemoteJndiName: Queues/OraSDPMDriverDefSndQ1
+                                LocalJNDIName: OraSDPM/Queues/OraSDPMDriverDefSndQ1
+                            OraSDPM/Queues/OraSDPMEngineRcvQ1:
+                                RemoteJndiName: Queues/OraSDPMEngineRcvQ1
+                                LocalJNDIName: OraSDPM/Queues/OraSDPMEngineRcvQ1
+                            OraSDPM/Queues/OraSDPMEngineSndQ1:
+                                RemoteJndiName: Queues/OraSDPMEngineSndQ1
+                                LocalJNDIName: OraSDPM/Queues/OraSDPMEngineSndQ1
+                            OraSDPM/Queues/OraSDPMEnginePendingRcvQ:
+                                RemoteJndiName: Queues/OraSDPMEnginePendingRcvQ
+                                LocalJNDIName: OraSDPM/Queues/OraSDPMEnginePendingRcvQ
+                        JNDIProperty:
+                            datasource:
+                                Key: datasource
+                                Value: jdbc/OraSDPMDataSource
+        BPMJMSModule:
+            Target: soa_cluster
+            DescriptorFileName: 'jms/bpmjmsmodule-jms.xml'
+            SubDeployment:
+                BPMSubDeployment_auto_1:
+                    Target: BPMJMSServer_auto_1
+            JmsResource:
+                ConnectionFactory:
+                    CubeCommandXAConnectionFactory:
+                        JNDIName: jms/bpm/CubeCommandXAConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 200000
+                        TransactionParams:
+                            TransactionTimeout: 3600
+                            XAConnectionFactoryEnabled: true
+                    MeasurementTopicConnectionFactory:
+                        JNDIName: jms/bpm/MeasurementTopicConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 200000
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    BeamActionXAConnectionFactory:
+                        JNDIName: jms/bpm/BeamActionXAConnectionFactory
+                        DefaultTargetingEnabled: true
+                        ClientParams:
+                            ClientIdPolicy: Unrestricted
+                            SubscriptionSharingPolicy: Sharable
+                        DefaultDeliveryParams:
+                            SendTimeout: 200000
+                        TransactionParams:
+                            TransactionTimeout: 3600
+                            XAConnectionFactoryEnabled: true
+                    BAMCommandXAConnectionFactory:
+                        JNDIName: jms/bpm/BAMCommandXAConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 200000
+                        TransactionParams:
+                            TransactionTimeout: 3600
+                            XAConnectionFactoryEnabled: true
+                    PeopleQueryTopicConnectionFactory:
+                        JNDIName: jms/bpm/PeopleQueryTopicConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 200000
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    PeopleQueryConnectionFactory:
+                        JNDIName: jms/bpm/PeopleQueryConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 200000
+                        TransactionParams:
+                            TransactionTimeout: 3600
+                            XAConnectionFactoryEnabled: true
+                Quota:
+                    MeasurementQuota:
+                        MessagesMaximum: 1000000
+                        BytesMaximum: 800000000
+                        Shared: false
+                UniformDistributedTopic:
+                    dist_PeopleQueryTopic_auto_1:
+                        ForwardingPolicy: Partitioned
+                        SubDeploymentName: BPMSubDeployment_auto_1
+                        JNDIName: jms/bpm/PeopleQueryTopic
+                    dist_MeasurementTopic_auto_1:
+                        Quota: MeasurementQuota
+                        ForwardingPolicy: Partitioned
+                        SubDeploymentName: BPMSubDeployment_auto_1
+                        JNDIName: jms/bpm/MeasurementTopic
+        SOAJMSModule:
+            Target: soa_cluster
+            DescriptorFileName: 'jms/soajmsmodule-jms.xml'
+            SubDeployment:
+                SOASubDeployment_auto_1:
+                    Target: SOAJMSServer_auto_1
+            JmsResource:
+                ConnectionFactory:
+                    B2BEventQueueConnectionFactory:
+                        JNDIName: jms/b2b/B2BEventQueueConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    B2BQueueConnectionFactory:
+                        JNDIName: jms/b2b/B2BQueueConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    B2BBroadcastTopicConnectionFactory:
+                        JNDIName: jms/b2b/B2BBroadcastTopicConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    TransportDispatcherQueueConnectionFactory:
+                        JNDIName: jms/b2b/TransportDispatcherQueueConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    NotificationSenderQueueConnectionFactory:
+                        JNDIName: jms/Queue/NotificationSenderQueueConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    TestFwkQueueFactory:
+                        JNDIName: jms/testfwk/TestFwkQueueFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    EDNConnectionFactory:
+                        JNDIName: jms/fabric/EDNConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 10000
+                    XAEDNConnectionFactory:
+                        JNDIName: jms/fabric/xaEDNConnectionFactory
+                        DefaultTargetingEnabled: true
+                        DefaultDeliveryParams:
+                            SendTimeout: 10000
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    XmlSchemaChangeNotificationConnectionFactory:
+                        JNDIName: jms/fabric/XmlSchemaChangeNotificationConnectionFactory
+                        DefaultTargetingEnabled: true
+                    TenantTopicConnectionFactory:
+                        JNDIName: jms/fabric/TenantTopicConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    CaseEventConnectionFactory:
+                        JNDIName: jms/bpm/CaseEventConnectionFactory
+                        DefaultTargetingEnabled: true
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                    HCEventConnectionFactory:
+                        JNDIName: jms/b2b/HCEventConnectionFactory
+                        DefaultTargetingEnabled: true
+                ForeignServer:
+                    EDNAQjmsLocalTxForeignServer:
+                        InitialContextFactory: oracle.jms.AQjmsInitialContextFactory
+                        DefaultTargetingEnabled: true
+                        ForeignConnectionFactory:
+                            EDNAQjmsTopicLocalTxConnectionFactory:
+                                RemoteJndiName: TopicConnectionFactory
+                                LocalJNDIName: jms/fabric/EDNAQjmsTopicLocalTxConnectionFactory
+                        JNDIProperty:
+                            datasource:
+                                Key: datasource
+                                Value: jdbc/SOALocalTxDataSource
+                    EDNAQjmsForeignServer:
+                        InitialContextFactory: oracle.jms.AQjmsInitialContextFactory
+                        DefaultTargetingEnabled: true
+                        ForeignConnectionFactory:
+                            EDNAQjmsXATopicConnectionFactory:
+                                RemoteJndiName: XATopicConnectionFactory
+                                LocalJNDIName: jms/fabric/EDNAQjmsTopicXAConnectionFactory
+                        ForeignDestination:
+                            EDNAQjmsTopic:
+                                RemoteJndiName: Topics/EDN_AQJMS_TOPIC
+                                LocalJNDIName: jms/fabric/EDNAQjmsTopic
+                        JNDIProperty:
+                            datasource:
+                                Key: datasource
+                                Value: jdbc/SOADataSource
+                Quota:
+                    EDNQuota:
+                        MessagesMaximum: 50000
+                        BytesMaximum: 9223372036854775807
+                        Shared: false
+                UniformDistributedQueue:
+                    dist_NotificationSenderQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/Queue/NotificationSenderQueue
+                    dist_TestFwkQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/testfwk/TestFwkQueue
+                    dist_B2BEventQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/B2BEventQueue
+                    dist_TransportDispatcherQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/TransportDispatcherQueue
+                    dist_B2B_IN_QUEUE_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/B2B_IN_QUEUE
+                    dist_B2B_OUT_QUEUE_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/B2B_OUT_QUEUE
+                    dist_EDNQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/fabric/EDNQueue
+                    dist_CaseEventQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/bpm/CaseEventQueue
+                    dist_HCInboundQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/HCInboundQueue
+                    dist_HCOutboundQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/HCOutboundQueue
+                    dist_HCAuditQueue_auto_1:
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/HCAuditQueue
+                UniformDistributedTopic:
+                    dist_EDNTopic_auto_1:
+                        Quota: EDNQuota
+                        ForwardingPolicy: Partitioned
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/fabric/EDNTopic
+                    dist_B2BBroadcastTopic_auto_1:
+                        ForwardingPolicy: Partitioned
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/b2b/B2BBroadcastTopic
+                    dist_TenantTopic_auto_1:
+                        ForwardingPolicy: Partitioned
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/fabric/TenantTopic
+                    dist_XmlSchemaChangeNotificationTopic_auto_1:
+                        ForwardingPolicy: Partitioned
+                        SubDeploymentName: SOASubDeployment_auto_1
+                        JNDIName: jms/fabric/XmlSchemaChangeNotificationTopic
+        OIMJMSModule:
+            Target: oim_cluster
+            DescriptorFileName: 'jms/OIMJMSModule-jms.xml'
+            SubDeployment:
+                OIMSubDeployment_auto_1:
+                    Target: OIMJMSServer_auto_1
+            JmsResource:
+                ConnectionFactory:
+                    oimQueueConnectionFactory:
+                        JNDIName: jms/QueueConnectionFactory
+                        DefaultTargetingEnabled: true
+                        LoadBalancingParams:
+                            ServerAffinityEnabled: false
+                        TransactionParams:
+                            XAConnectionFactoryEnabled: true
+                UniformDistributedQueue:
+                    dist_oimAttestationQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimAttestationQueue
+                    dist_oimAuditQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimAuditQueue
+                    dist_oimDefaultQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimDefaultQueue
+                    dist_oimKernelQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimKernelQueue
+                    dist_oimProcessQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimProcessQueue
+                    dist_oimReconQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimReconQueue
+                    dist_oimSODQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimSODQueue
+                    dist_oimRoleGrantRevokeQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimRoleGrantRevokeQueue
+                    dist_oimAccessPolicyQueue_auto_1:
+                        SubDeploymentName: OIMSubDeployment_auto_1
+                        JNDIName: queue/oimAccessPolicyQueue
+    WLDFSystemResource:
+        'Module-FMWDFW':
+            Description: Creates FMWDFW incidents based on unchecked Exceptions and critical errors
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+            DescriptorFileName: 'diagnostics/Module-FMWDFW-2818.xml'
+            WLDFResource:
+                WatchNotification:
+                    JMXNotification:
+                        'FMWDFW-notification':
+                            NotificationType: oracle.dfw.wldfnotification
+                    Watch:
+                        UncheckedException:
+                            RuleType: Log
+                            AlarmResetPeriod: 30000
+                            RuleExpression: '(log.severityString == ''Error'') and ((log.messageId == ''WL-101020'') or (log.messageId == ''WL-101017'') or (log.messageId == ''WL-000802'') or (log.messageId == ''BEA-101020'') or (log.messageId == ''BEA-101017'') or (log.messageId == ''BEA-000802''))'
+                            Notification: 'FMWDFW-notification'
+                            AlarmType: AutomaticReset
+                            ExpressionLanguage: EL
+                        Deadlock:
+                            RuleType: Log
+                            AlarmResetPeriod: 30000
+                            RuleExpression: '((log.severityString == ''Critical'') or (log.severityString == ''Info'')) and ((log.messageId == ''WL-000394'') or (log.messageId == ''BEA-000394''))'
+                            Notification: 'FMWDFW-notification'
+                            AlarmType: AutomaticReset
+                            ExpressionLanguage: EL
+                        StuckThread:
+                            RuleType: Log
+                            AlarmResetPeriod: 600000
+                            RuleExpression: '(log.severityString == ''Error'') and ((log.messageId == ''WL-000337'') or (log.messageId == ''BEA-000337''))'
+                            Notification: 'FMWDFW-notification'
+                            AlarmType: AutomaticReset
+                            ExpressionLanguage: EL
+                        HeapSpace:
+                            RuleType: Log
+                            AlarmResetPeriod: 1800000
+                            RuleExpression: '((log.severityString == ''Critical'') or (log.severityString == ''Warning'')) and ((log.messageId == ''WL-310003'') or (log.messageId == ''BEA-310003''))'
+                            Notification: 'FMWDFW-notification'
+                            AlarmType: AutomaticReset
+                            ExpressionLanguage: EL
+    CoherenceClusterSystemResource:
+        defaultCoherenceCluster:
+            ReportGroupFile: 'em/metadata/reports/coherence/report-group.xml'
+            DescriptorFileName: 'coherence/defaultCoherenceCluster-coherence.xml'
+            CoherenceResource:
+                CoherenceClusterParams:
+                    ClusterListenPort: 7574
+appDeployments:
+    Library:
+        'oracle.webcenter.skin#2.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wccore/oracle.webcenter.skin.ear'
+            ModuleType: ear
+            DeploymentOrder: 300
+            StagingMode: nostage
+            Target: 'oim_cluster,AdminServer'
+        'oracle.webcenter.composer#2.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wccore/oracle.webcenter.composer.war'
+            ModuleType: war
+            DeploymentOrder: 300
+            StagingMode: nostage
+            Target: 'oim_cluster,AdminServer'
+        'oracle.wsm.idmrest.sharedlib#1.0@12.2.1.3':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wsm.common/wsm-idmrest-sharedlib.war'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.wsm.seedpolicies#2.0@12.2.1.3':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wsm.common/wsm-seed-policies.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.sdp.client#2.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.sdp.client/sdpclient.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.pwdgen#2.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.pwdgen/pwdgen.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'owasp.esapi#2.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.owasp/owasp-esapi.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.adf.dconfigbeans#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.dconfigbeans.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.model/adf.oracle.domain.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.businesseditor#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.businesseditor/adf.businesseditor.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.adf.management#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.management/adf-management.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain.webapp#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.view/adf.oracle.domain.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'jsf#2.0@1.0.0.0_2-2-8':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/../wlserver/common/deployable-libraries/jsf-2.0.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'jstl#1.2@1.2.0.1':
+            SourcePath: '@@WL_HOME@@/common/deployable-libraries/jstl-1.2.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'UIX#11@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.uix/uix11.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'ohw-rcf#5@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.help/ohw-rcf.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'ohw-uix#5@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.help/ohw-uix.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.adf.desktopintegration.model#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.desktopintegration.model/oracle.adf.desktopintegration.model.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.adf.desktopintegration#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.adf.desktopintegration/oracle.adf.desktopintegration.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.bi.jbips#11.1.1@0.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.bi.presentation/bi-jbips-slib-stub.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.bi.composer#11.1.1@0.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.bi.presentation/bi-composer-slib-stub.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.bi.adf.model.slib#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.bi.presentation/bi-adf-model-slib.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.bi.adf.view.slib#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.bi.presentation/bi-adf-view-slib.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.bi.adf.webcenter.slib#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.bi.presentation/bi-adf-webcenter-slib.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'adf.oracle.domain.groovy#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/groovy-all.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain.webapp.antlr-runtime#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/antlr-runtime.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain.webapp.guava#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/guava.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'adf.oracle.domain.webapp.xml-apis-ext#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/xml-apis-ext.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'adf.oracle.domain.webapp.apache.velocity#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/velocity.v_dev_1.4.0.0.0.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain.webapp.apache.httpclient#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/org.apache.httpcomponents.httpclient_4.5.6.0.0.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'adf.oracle.domain.webapp.apache.httpclient-cache#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/httpclient-cache.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'adf.oracle.domain.webapp.apache.httpcore#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/httpcore.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain.webapp.apache.httpmime#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/httpmime_4.5.1.0.0.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'adf.oracle.domain.webapp.batik-bundle#1.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/thirdparty/features/batik-all.jar'
+            ModuleType: jar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'odl.clickhistory#1.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.odl/clickhistory.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'odl.clickhistory.webapp#1.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.odl/clickhistory.war'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        oracle.jrf.system.filter:
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.jrf/system-filters.war'
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.jsp.next#12.2.1@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/com.oracle.ojsp.ojsp.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.dconfig-infra#2.0@12.2.1':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.dconfig-infra.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'orai18n-adf#11@11.1.1.1.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.nlsgdk/orai18n-adf.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.wsm.console.core.view#1.0@12.2.1.3':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wsm.console.core/oracle.wsm.console.core.view.war'
+            ModuleType: war
+            DeploymentOrder: 311
+            StagingMode: nostage
+            Target: AdminServer
+        'oracle.soa.workflow.wc#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.workflow_11.1.1/oracle.soa.workflow.wc.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.soa.worklist.webapp#11.1.1@11.1.1':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.worklist.webapp_11.1.1/oracle.soa.worklist.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        emcore:
+            SourcePath: '@@ORACLE_HOME@@/em/archives/applications/em_fmwconsole.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        emas:
+            SourcePath: '@@ORACLE_HOME@@/em/archives/applications/emas.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        oracle.idm.common.model:
+            SourcePath: '@@ORACLE_HOME@@/idm/modules/oracle.idm.uishell_12.2.2/oracle.idm.common.model.ear'
+            ModuleType: ear
+            DeploymentOrder: 300
+            StagingMode: nostage
+            Target: 'oim_cluster,AdminServer'
+        oracle.idm.uishell:
+            SourcePath: '@@ORACLE_HOME@@/idm/modules/oracle.idm.uishell_12.2.2/oracle.idm.uishell.war'
+            ModuleType: war
+            DeploymentOrder: 300
+            StagingMode: nostage
+            Target: 'oim_cluster,AdminServer'
+        'oracle.sdp.messaging#2.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/modules/oracle.sdp.messaging/sdpmessaging.jar'
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.ucs.userprefs.webapp#2.0@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/modules/oracle.ucs.userprefs.webapp/userprefsclient.war'
+            StagingMode: nostage
+            Target: soa_cluster
+        'log4j_jar#1.3@1.2.15':
+            SourcePath: '@@ORACLE_HOME@@/em/../oracle_common/modules/com.bea.core.apache.log4j.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        emcore_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCORE.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'emagentsdk_jar#12.4@12.1.0.4.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emagentSDK.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'emagentsdkimpl_jar#12.4@12.1.0.4.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emagentSDKImpl.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'emagentsdkimplpriv_jar#12.4@12.1.0.4.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emagentSDKImpl_priv.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'em_error#12.4@12.1.0.4.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/em_error.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'em_common#12.4@12.1.0.4.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/em_common.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'emcoresdk_jar#11.2.0.1.0@12.1.0.0.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCoreSDK.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'emcoreintsdk_jar#11.2.0.1.0@12.1.0.0.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCoreInternalSDK.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        'emcoresdkimpl_jar#11.2.0.1.0@12.1.0.0.0':
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCoreSDKImpl.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        emcorecommon_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCoreCommon.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        emcoreconsole_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCoreConsole.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        emcorepbs_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emCorePBS.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        emcoreclient_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/emcore_client.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        em_sdkcore_ppc_public_pojo_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/em-sdkcore-ppc-public-pojo.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        em_core_ppc_pojo_jar:
+            SourcePath: '@@ORACLE_HOME@@/em/jlib/em-core-ppc-pojo.jar'
+            StagingMode: nostage
+            Target: AdminServer
+        idm.em:
+            SourcePath: '@@ORACLE_HOME@@/em/archives/fmwctrl/plugins/em_idm.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        'oracle.soa.management.webapp#12.1.2@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.mgmt_11.1.1/oracle.soa.management.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        'oracle.bpm.management.webapp#12.1.3@12.1.3':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.bpm.mgmt_12.1.3/oracle.bpm.management.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        soa.em:
+            SourcePath: '@@ORACLE_HOME@@/em/archives/fmwctrl/plugins/em_soa.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        emai.fmwctrl.dep:
+            SourcePath: '@@ORACLE_HOME@@/em/archives/fmwctrl/em-ai-fmwctrl-dep.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: AdminServer
+        'oracle.rules#11.1.1@12.1.3':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.rules_11.1.1/rules.jar'
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.ess.thin.client#12@12.2.1.3.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.ess.thin.client/ess-thin-client.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.common.dvmxref#12.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.common.dvmxref_12.1.1/oracle.soa.common.dvmxref.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.common.resequencer#12.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.common.resequencer_12.1.1/oracle.soa.common.resequencer.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.adapter.ext#12.1.2@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.adapter.ext_12.1.2/oracle.adapter.ext.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.commonconsole.webapp#12.1.2@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.commonconsole.webapp_12.1.2/oracle.soa.commonconsole.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.commonconsole.dependencies#12.1.2@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.commonconsole.dependencies_12.1.2/oracle.soa.commonconsole.dependencies.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.cloud.adapter#12.1.2@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.cloud.adapter_12.1.3/oracle.cloud.adapter.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.common.functions#12.2.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.common.functions/oracle.soa.common.functions.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.rules_dict_dc.webapp#11.1.1@11.1.1':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.rules_dict_dc.webapp_11.1.1/oracle.soa.rules_dict_dc.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.soa.worklist#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.worklist_11.1.1/oracle.soa.worklist.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.bpel#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.bpel_11.1.1/oracle.soa.bpel.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'oracle.soa.workflow#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.workflow_11.1.1/oracle.soa.workflow.jar'
+            StagingMode: nostage
+            Target: 'oim_cluster,soa_cluster,AdminServer'
+        'oracle.soa.mediator#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.mediator_11.1.1/oracle.soa.mediator.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.webmapper#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.webmapper/MapperReusableComponent.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.composer.webapp#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.composer.webapp_11.1.1/oracle.soa.composer.webapp.war'
+            ModuleType: war
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.ext#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.ext_11.1.1/oracle.soa.ext.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.apps#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.apps_11.1.1/oracle.soa.apps.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.xquery#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.xquery_11.1.1/oracle.soa.xquery.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'oracle.soa.common.sequencing#11.1.1@12.1.2':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.soa.b2b_11.1.1/oracle.soa.common.sequencing.jar'
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        oracle.idm.ids.config.ui:
+            SourcePath: '@@ORACLE_HOME@@/idm/modules/oracle.idm.ids.config.ui_12.2.2/oracle.idm.ids.config.ui.war'
+            ModuleType: war
+            DeploymentOrder: 300
+            StagingMode: nostage
+            Target: 'oim_cluster,AdminServer'
+        'oracle.iam.ui.model#1.0@11.1.1.5.0':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oracle.iam.ui.model.ear'
+            DeploymentOrder: 401
+            StagingMode: nostage
+            Target: oim_cluster
+        oracle.iam.server.oimclient:
+            SourcePath: '@@ORACLE_HOME@@/idm/server/client/oimclient.jar'
+            DeploymentOrder: 402
+            StagingMode: nostage
+            Target: oim_cluster
+        'oracle.iam.ui.view#11.1.1@11.1.1':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oracle.iam.ui.view.war'
+            DeploymentOrder: 402
+            StagingMode: nostage
+            Target: oim_cluster
+        'oracle.iam.ui.oia-view#11.1.1@11.1.1':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oracle.iam.ui.oia-view.war'
+            DeploymentOrder: 403
+            StagingMode: nostage
+            Target: oim_cluster
+        'oracle.iam.ui.custom#11.1.1@11.1.1':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oracle.iam.ui.custom-dev-starter-pack.war'
+            DeploymentOrder: 404
+            StagingMode: nostage
+            Target: oim_cluster
+        'oracle.grcc.oaacg#8.6.1@8.6.1':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/oaacg/grcc-grccclient.jar'
+            DeploymentOrder: 52
+            StagingMode: nostage
+            Target: oim_cluster
+        oracle.idm.ipf:
+            SourcePath: '@@ORACLE_HOME@@/idm/modules/oracle.idm.ipf_12.2.2/ipf.jar'
+            DeploymentOrder: 401
+            StagingMode: nostage
+            Target: oim_cluster
+        'idmdf-common':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/idmdf/idmdf-common.jar'
+            DeploymentOrder: 54
+            StagingMode: nostage
+            Target: oim_cluster
+        'idmdf-notification-engine':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/idmdf/idmdf-notification-engine.jar'
+            DeploymentOrder: 55
+            StagingMode: nostage
+            Target: oim_cluster
+        'event-recording-client':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/idmdf/event-recording-client.jar'
+            DeploymentOrder: 56
+            StagingMode: nostage
+            Target: oim_cluster
+        'icf-oim-intg.jar':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/icf/intg/icf-oim-intg.jar'
+            DeploymentOrder: 407
+            StagingMode: nostage
+            Target: oim_cluster
+    Application:
+        'opss-rest':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wsm.common/opss-rest.war'
+            ModuleType: war
+            DeploymentOrder: 150
+            StagingMode: nostage
+            Target: AdminServer
+        'state-management-provider-memory-rar':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/com.oracle.state-management.state-management-provider-memory-rar-impl.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'DMS Application#12.2.1.1.0':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.dms/dms.war'
+            ModuleType: war
+            DeploymentOrder: 5
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'coherence-transaction-rar':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/../coherence/lib/coherence-transaction.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        'wsm-pm':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/modules/oracle.wsm.pm/wsm-pm.ear'
+            ModuleType: ear
+            DeploymentOrder: 5
+            StagingMode: nostage
+            Target: 'soa_cluster,oim_cluster,AdminServer'
+        em:
+            SourcePath: '@@ORACLE_HOME@@/user_projects/applications/idm_domain/em.ear'
+            ModuleType: ear
+            DeploymentOrder: 400
+            StagingMode: nostage
+            Target: AdminServer
+        usermessagingserver:
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingserver-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 7
+            StagingMode: nostage
+            Target: soa_cluster
+        'usermessagingdriver-apns':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-apns-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+        'usermessagingdriver-email':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-email-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+            Target: soa_cluster
+        'usermessagingdriver-extension':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-extension-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+        'usermessagingdriver-gcm':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-gcm-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+        'usermessagingdriver-smpp':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-smpp-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+        'usermessagingdriver-twitter':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-twitter-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+        'usermessagingdriver-xmpp':
+            SourcePath: '@@ORACLE_HOME@@/oracle_common/communications/applications/usermessagingdriver-xmpp-ear.ear'
+            ModuleType: ear
+            DeploymentOrder: 8
+            StagingMode: nostage
+        FileAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/FileAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: soa_cluster
+        DbAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/DbAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: soa_cluster
+        JmsAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/JmsAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: soa_cluster
+        AqAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/AqAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: soa_cluster
+        SocketAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/SocketAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        MQSeriesAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/MQSeriesAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: soa_cluster
+        OracleBamAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/OracleBamAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        UMSAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/UMSAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+            Target: soa_cluster
+        CoherenceAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/CoherenceAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        LdapAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/LdapAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        MSMQAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/MSMQAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        SAPAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/SAPAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        SiebelAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/SiebelAdapter.rar'
+            ModuleType: rar
+            StagingMode: nostage
+        FtpAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/FtpAdapter.rar'
+            ModuleType: rar
+            DeploymentOrder: 200
+            StagingMode: nostage
+            Target: soa_cluster
+        OracleAppsAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/AppsAdapter.rar'
+            ModuleType: rar
+            DeploymentOrder: 200
+            StagingMode: nostage
+            Target: soa_cluster
+        JDEWorldAdapter:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/connectors/JDEWorldAdapter.rar'
+            ModuleType: rar
+            DeploymentOrder: 200
+            StagingMode: nostage
+        Cloudsdk:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/modules/oracle.cloud.adapter_12.1.3/cloudsdk.ear'
+            ModuleType: ear
+            DeploymentOrder: 44
+            StagingMode: nostage
+            Target: 'soa_cluster,AdminServer'
+        'soa-webapps':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/applications/soa-webapps-wls.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: soa_cluster
+        'soa-infra':
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/applications/soa-infra-wls.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: soa_cluster
+        worklistapp:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/applications/worklist-wls.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: soa_cluster
+        b2bui:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/applications/soa-infra-b2bui-wls.ear'
+            ModuleType: ear
+            StagingMode: nostage
+        DefaultToDoTaskFlow:
+            SourcePath: '@@ORACLE_HOME@@/soa/soa/applications/DefaultToDoTaskFlow.ear'
+            ModuleType: ear
+            StagingMode: nostage
+            Target: soa_cluster
+        oim:
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oim.ear'
+            ModuleType: ear
+            DeploymentOrder: 48
+            StagingMode: nostage
+            Target: oim_cluster
+        'oracle.iam.console.identity.self-service.ear#V2.0':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oracle.iam.console.identity.self-service.ear'
+            ModuleType: ear
+            DeploymentOrder: 405
+            StagingMode: nostage
+            Target: oim_cluster
+        'oracle.iam.console.identity.sysadmin.ear#V2.0':
+            SourcePath: '@@ORACLE_HOME@@/idm/server/apps/oracle.iam.console.identity.sysadmin.ear'
+            ModuleType: ear
+            DeploymentOrder: 406
+            StagingMode: nostage
+            Target: oim_cluster

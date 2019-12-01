@@ -2,6 +2,7 @@
 --  sudo docker exec  -it template-orcl /opt/oracle/product/19c/dbhome_1/bin/sqlplus system/MyPasswd123@//localhost:1521/ORCLPDB1
 -- sudo docker run -d -p 1527:1521 -p 5507:5500 -it --name template-orcl -v /home/oracle/oradata:/opt/oracle/oradata -v /home/oracle/scripts/setup:/docker-entrypoint-initdb.d/setup --shm-size="8g" oracle/idm/database:19.3.0-se2
 -- sqlplus system/MyPasswd123@//idm.iplusplus.dev:1527/ORCLPDB1
+--  ./rcu -silent -responseFile /home/ivasi/idm/src/docker/OracleIDM/dockerfiles/12.2.1.4/install/rcuResponseFile.properties
 grant select on v$xatrans$ to public;
 grant select on pending_trans$ to public;
 grant select on dba_2pc_pending to public;

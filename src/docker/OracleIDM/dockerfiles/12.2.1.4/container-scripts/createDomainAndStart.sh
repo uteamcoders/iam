@@ -159,10 +159,10 @@ then
   # then drop the prefix and restart. New Domain creation
   # scenario
   echo "INFO: Dropping Schema $RCUPREFIX..."
-  /$vol_name/oracle/oracle_common/bin/rcu -silent -dropRepository -databaseType ORACLE -connectString $CONNECTION_STRING -dbUser sys -dbRole sysdba -selectDependentsForComponents true -schemaPrefix $RCUPREFIX -component OPSS -component STB -component SOAINFRA -f < /tmp/pwd.txt
+  /$vol_name/oracle/oracle_common/bin/rcu -silent -dropRepository -databaseType ORACLE -connectString $CONNECTION_STRING -dbUser sys -dbRole sysdba -selectDependentsForComponents true -schemaPrefix $RCUPREFIX -component STB -component OPSS -component SOAINFRA -component OIM -component UCSUMS -component OAM -component IAU -component IAU_APPEND -component IAU_VIEWER -component MDS -component WLS -f < /tmp/pwd.txt
 	
   echo "INFO: Creating Schema $RCUPREFIX..."
-  /$vol_name/oracle/oracle_common/bin/rcu -silent -createRepository -databaseType ORACLE -connectString $CONNECTION_STRING -dbUser sys -dbRole sysdba -useSamePasswordForAllSchemaUsers true -selectDependentsForComponents true -variables SOA_PROFILE_TYPE=SMALL,HEALTHCARE_INTEGRATION=NO -schemaPrefix $RCUPREFIX -component OPSS -component STB -component SOAINFRA -f < /tmp/pwd.txt
+  /$vol_name/oracle/oracle_common/bin/rcu -silent -createRepository -databaseType ORACLE -connectString $CONNECTION_STRING -dbUser sys -dbRole sysdba -useSamePasswordForAllSchemaUsers true -selectDependentsForComponents true -variables SOA_PROFILE_TYPE=SMALL,HEALTHCARE_INTEGRATION=NO -schemaPrefix $RCUPREFIX -component STB -component OPSS -component SOAINFRA -component OIM -component UCSUMS -component OAM -component IAU -component IAU_APPEND -component IAU_VIEWER -component MDS -component WLS -f < /tmp/pwd.txt
   retval=$?
 
   if [ $retval -ne 0 ]; 
@@ -199,7 +199,15 @@ fi
 
 if [ "$CONFIGURE_DOMAIN" = "true" ] 
 then
-  cfgCmd="/u01/oracle/oracle_common/common/bin/wlst.sh -skipWLSModuleScanning /u01/oracle/dockertools/createDomain.py -oh $ORACLE_HOME -jh $JAVA_HOME -parent $DOMAIN_ROOT -name $DOMAIN_NAME -password $ADMIN_PASSWORD -rcuDb $CONNECTION_STRING -rcuPrefix $RCUPREFIX -rcuSchemaPwd $DB_SCHEMA_PASSWORD -domainType $DOMAIN_TYPE"
+#  cfgCmd="/u01/oracle/oracle_common/common/bin/wlst.sh -skipWLSModuleScanning /u01/oracle/dockertools/createDomain.py -oh $ORACLE_HOME -jh $JAVA_HOME -parent $DOMAIN_ROOT -name $DOMAIN_NAME -password $ADMIN_PASSWORD -rcuDb $CONNECTION_STRING -rcuPrefix $RCUPREFIX -rcuSchemaPwd $DB_SCHEMA_PASSWORD -domainType $DOMAIN_TYPE"
+  cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
+        -oracle_home $ORACLE_HOME \
+        -java_home $JAVA_HOME \
+        -domain_home $DOMAIN_HOME \
+        -domain_type WLS \
+        -model_file  /u01/IdmDomain.yaml \
+        -variable_file  /u01/IdmDomain.properties \
+        -archive_file /u01/IdmDomain.zip
   ${cfgCmd}
   retval=$?
   if [ $retval -ne 0 ]; 
