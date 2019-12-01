@@ -9,16 +9,15 @@ services:
     ports:
       - "${DC_ORCL_PORT}:1521"
       - "${DC_ORCL_OEM_PORT}:5500"
-    environment:
-      - ORACLE_SID=${DC_ORCL_SID}
-      - ORACLE_PDB=${DC_ORCL_PDB}
-      - ORACLE_PWD=${DC_ORCL_SYSPWD}
     container_name: idmdb
     volumes:
       - ${DC_ORCL_DBDATA}:/opt/oracle/oradata
     build:
       context: ./OracleDatabaseStandard/dockerfiles/${DC_IDM_DB_VERSION}
-
+      args:
+        - ORACLE_SID=${DC_ORCL_SID}
+        - ORACLE_PDB=${DC_ORCL_PDB}
+        - ORACLE_PWD=${ORACLE_PWD}
   #
   # The SOA Admin Server
   #
@@ -30,20 +29,17 @@ services:
     command: /bin/bash -c "sleep 5s; /u01/oracle/dockertools/createDomainAndStart.sh"
     ports:
       - "7001:7001"
-    environment:
-      - DOMAIN_TYPE=soa
-      - ADMIN_HOST=${ADMIN_HOST}
-      - ADMIN_PASSWORD=${DC_ADMIN_PWD}
-      - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${DC_ORCL_PDB}
-      - DB_PASSWORD=${DC_ORCL_SYSPWD}
-      - DB_SCHEMA_PASSWORD=${DC_RCU_SCHPWD}
-      - RCUPREFIX=${DC_RCU_SOAPFX}
-      - MANAGED_SERVER=soa_server1
     volumes:
       - ${DC_DDIR_USER_PROJECTS}:/u01/oracle/user_projects
     build:
       context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
-
+      args:
+        - ADMIN_HOST=${ADMIN_HOST}
+        - ADMIN_PASSWORD=${DC_ADMIN_PWD}
+        - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${DC_ORCL_PDB}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_SCHEMA_PASSWORD=${DB_PASSWORD}
+        - RCUPREFIX=${RCUPREFIX}
   #
   # The SOA Managed Server
   #
@@ -57,8 +53,6 @@ services:
       - "8001:8001"
       - "8002:8002"
     environment:
-      - DOMAIN_TYPE=soa
-      - ADMIN_HOST=${ADMIN_HOST}
       - ADMIN_PORT=7001
       - adminhostname=${ADMIN_HOST}
       - adminport=7001
@@ -80,8 +74,6 @@ services:
       - "8001:8001"
       - "8002:8002"
     environment:
-      - DOMAIN_TYPE=soa
-      - ADMIN_HOST=${ADMIN_HOST}
       - ADMIN_PORT=7001
       - adminhostname=${ADMIN_HOST}
       - adminport=7001
