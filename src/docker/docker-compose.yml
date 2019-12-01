@@ -16,12 +16,14 @@ services:
     container_name: idmdb
     volumes:
       - ${DC_ORCL_DBDATA}:/opt/oracle/oradata
+    build:
+      context: ./OracleDatabaseStandard/dockerfiles/${DC_IDM_DB_VERSION}
 
   #
   # The SOA Admin Server
   #
   idmas:
-    image: oracle/idm/:${DC_IDM_VERSION}
+    image: oracle/idm:${DC_IDM_VERSION}
     container_name: idmas
     depends_on:
       - "idmdb"
@@ -39,12 +41,14 @@ services:
       - MANAGED_SERVER=soa_server1
     volumes:
       - ${DC_DDIR_USER_PROJECTS}:/u01/oracle/user_projects
+    build:
+      context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
 
   #
   # The SOA Managed Server
   #
   soams:
-    image: oracle/idm/:${DC_IDM_VERSION}
+    image: oracle/idm:${DC_IDM_VERSION}
     container_name: soams
     depends_on:
       - "idmas"
@@ -63,11 +67,11 @@ services:
       - ${DC_DDIR_USER_PROJECTS}:/u01/oracle/user_projects
 
   #
-  # The SOA Managed Server
+  # The OIM Managed Server
   #
 
   idmms:
-    image: oracle/idm/:${DC_IDM_VERSION}
+    image: oracle/idm:${DC_IDM_VERSION}
     container_name: oimms
     depends_on:
       - "soams"

@@ -6,7 +6,7 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 #
 
-export DOMAIN_NAME=${DOMAIN_NAME:-soainfra}
+export DOMAIN_NAME=${DOMAIN_NAME:-idm_domain}
 export DOMAIN_ROOT=${DOMAIN_ROOT:-/u01/oracle/user_projects/domains}
 export DOMAIN_HOME=${DOMAIN_ROOT}/${DOMAIN_NAME}
 
@@ -149,7 +149,7 @@ if [ -e $CTR_DIR/RCU.$RCUPREFIX.suc ]
 then
     #RCU has already been executed successfully, no need to rerun
     RUN_RCU="false"
-    echo "INFO: SOA RCU has already been loaded. Skipping..."
+    echo "INFO: IDM RCU has already been loaded. Skipping..."
 fi
 
 if [ "$RUN_RCU" = "true" ] 
@@ -189,9 +189,9 @@ fi
 rm -f "/tmp/pwd.txt"
     
 #
-# Configuration of SOA domain
+# Configuration of IDM domain
 #=============================
-if [ -e $CTR_DIR/SOA.DOMAINCFG.suc ] 
+if [ -e $CTR_DIR/IDM.DOMAINCFG.suc ] 
 then
   CONFIGURE_DOMAIN="false"
   echo "INFO: Domain Already configured. Skipping..."
@@ -207,9 +207,10 @@ then
         -domain_type WLS \
         -model_file /u01/IdmDomain.yaml \
         -variable_file  /u01/IdmDomain.properties \
-        -archive_file /u01/IdmDomain.zip
+        -archive_file /u01/IdmDomain.zip"
   ${cfgCmd}
   retval=$?
+# https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.4/inoam/configuring-oracle-identity-governance-domain.html#GUID-D97A8D45-C3FD-49DB-BCF5-4372E37BE94F
   $ORACLE_HOME/idm/server/bin/offlineConfigManager.sh
   if [ $retval -ne 0 ];
   then
@@ -218,8 +219,8 @@ then
   else
     updateListenAddress
     # Write the Domain suc file... 
-    touch $CTR_DIR/SOA.DOMAINCFG.suc
-    echo ${cfgCmd} >> $CTR_DIR/SOA.DOMAINCFG.suc
+    touch $CTR_DIR/IDM.DOMAINCFG.suc
+    echo ${cfgCmd} >> $CTR_DIR/IDM.DOMAINCFG.suc
 
     cat > $CTR_DIR/contenv.sh <<EOF
 CONNECTION_STRING=$CONNECTION_STRING

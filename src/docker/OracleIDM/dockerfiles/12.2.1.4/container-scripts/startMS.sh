@@ -45,18 +45,11 @@ trap _kill SIGKILL
 
 export vol_name=u01
 
-grepPat="SOA Platform is running and accepting requests"
-
-
 LOGDIR=${DOMAIN_HOME}/logs
 LOGFILE=${LOGDIR}/${MANAGED_SERVER}.log
 mkdir -p ${LOGDIR}
 
-export thehost=`hostname -I`
-echo "INFO: Updating the listen address - ${thehost} ${ADMIN_HOST}"
-/u01/oracle/oracle_common/common/bin/wlst.sh -skipWLSModuleScanning /u01/oracle/dockertools/updListenAddress.py $vol_name $thehost ${MANAGED_SERVER} ${ADMIN_HOST} > ${LOGDIR}/mslisten.log 2>&1
-
-# Start SOA server
+# Start Managed server
 echo "INFO: Starting the managed server ${MANAGED_SERVER}"
 $DOMAIN_HOME/bin/startManagedWebLogic.sh ${MANAGED_SERVER} "http://"${ADMIN_HOST}:${ADMIN_PORT} > ${LOGFILE} 2>&1 &
 # tail Managed Server log
