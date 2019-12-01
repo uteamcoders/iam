@@ -5,7 +5,7 @@ services:
   # The Oracle DB Definition
   #
   idmdb:
-    image: oracle/idm/database:${DC_IDM_DB_VERSION}-${DC_IDM_DB_VERSION}
+    image: oracle/idm/database:${DC_IDM_DB_VERSION}-${DC_IDM_DB_EDITION}
     ports:
       - "${DC_ORCL_PORT}:1521"
       - "${DC_ORCL_OEM_PORT}:5500"

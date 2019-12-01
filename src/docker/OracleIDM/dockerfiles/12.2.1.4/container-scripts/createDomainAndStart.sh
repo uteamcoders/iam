@@ -205,12 +205,13 @@ then
         -java_home $JAVA_HOME \
         -domain_home $DOMAIN_HOME \
         -domain_type WLS \
-        -model_file  /u01/IdmDomain.yaml \
+        -model_file /u01/IdmDomain.yaml \
         -variable_file  /u01/IdmDomain.properties \
         -archive_file /u01/IdmDomain.zip
   ${cfgCmd}
   retval=$?
-  if [ $retval -ne 0 ]; 
+  $ORACLE_HOME/idm/server/bin/offlineConfigManager.sh
+  if [ $retval -ne 0 ];
   then
     echo "ERROR: Domain Configuration failed. Please check the logs"
     exit
