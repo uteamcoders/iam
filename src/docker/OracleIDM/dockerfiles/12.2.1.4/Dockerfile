@@ -106,9 +106,12 @@ RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/d
 
 RUN cd /u01 && \
   $JAVA_HOME/bin/java -jar /u01/$FMW_JAR1 -silent -responseFile /u01/idm.12.2.1.4.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
-  rm -fr /u01/*.jar /u01/*.response /u01/*.loc && \
-  find /u01/ -type f -iname "*.sh" -exec chmod +x {} \;
+  rm -fr /u01/*.jar /u01/*.response /u01/*.loc
 
+USER root
+RUN  find /u01/ -type f -iname "*.sh" -exec chmod +x {} \;
+
+USER oracle
 #
 # Define default command to start bash.
 #
