@@ -102,12 +102,12 @@ RUN  yum install -y hostname &&    \
 USER oracle
 COPY install/* /u01/
 RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.6.0/weblogic-deploy.zip -L -o /u01/weblogic-deploy.zip && \
-    unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy && \
-    find . -type f -iname "*.sh" -exec chmod +x {} \;
+    unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy
 
 RUN cd /u01 && \
   $JAVA_HOME/bin/java -jar /u01/$FMW_JAR1 -silent -responseFile /u01/idm.12.2.1.4.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
-  rm -fr /u01/*.jar /u01/*.response /u01/*.loc
+  rm -fr /u01/*.jar /u01/*.response /u01/*.loc && \
+  find /u01/ -type f -iname "*.sh" -exec chmod +x {} \;
 
 #
 # Define default command to start bash.

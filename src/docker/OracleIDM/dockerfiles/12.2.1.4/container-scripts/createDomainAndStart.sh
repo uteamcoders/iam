@@ -119,7 +119,7 @@ export vol_name=u01
 
 echo -e $DB_PASSWORD"\n"$DB_SCHEMA_PASSWORD > /tmp/pwd.txt
 
-CTR_DIR=/$vol_name/oracle/user_projects/container/${DOMAIN_NAME}
+CTR_DIR=/$vol_name/oracle/user_projects/domains/${DOMAIN_NAME}
 
 #
 # Creating schemas needed for sample domain ####
