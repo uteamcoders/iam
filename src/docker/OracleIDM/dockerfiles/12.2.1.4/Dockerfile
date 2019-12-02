@@ -33,8 +33,6 @@ RUN mkdir -p /u01 && \
     chmod a+xr /u01 && \
     useradd -b /u01 -d /u01/oracle -m -s /bin/bash oracle
 
-RUN yum install -y unzip
-
 # Environment variables required for this build (do NOT change)
 # -------------------------------------------------------------
 ## Copy packages
@@ -72,6 +70,7 @@ RUN mkdir -p /u01 && \
     mkdir -p $VOLUME_DIR && chown oracle:oracle /u01 $VOLUME_DIR && \
     mkdir -p /u01/oracle/container-scripts && \
     yum install -y libaio && \
+    yum install -y unzip && \
     rm -rf /var/cache/yum
 
 
@@ -103,7 +102,7 @@ RUN  yum install -y hostname &&    \
 USER oracle
 COPY install/* /u01/
 RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.6.0/weblogic-deploy.zip -o /u01/weblogic-deploy.zip && \
-    /bin/unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy && \
+    unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy && \
     find . -type f -iname "*.sh" -exec chmod +x {} \;
 
 RUN cd /u01 && \
