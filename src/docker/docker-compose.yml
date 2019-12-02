@@ -45,8 +45,8 @@ services:
       - DB_PASSWORD=${ORACLE_PWD}
       - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
       - RCUPREFIX=${RCUPREFIX}
-      - OIM_HOST="oim${IDM_INSTANCE}"
-      - SOA_HOST="soa${IDM_INSTANCE}"
+      - OIM_HOST=oim${IDM_INSTANCE}
+      - SOA_HOST=soa${IDM_INSTANCE}
     build:
       context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
       args:
@@ -57,8 +57,8 @@ services:
         - DB_PASSWORD=${ORACLE_PWD}
         - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
         - RCUPREFIX=${RCUPREFIX}
-        - OIM_HOST="oim${IDM_INSTANCE}"
-        - SOA_HOST="soa${IDM_INSTANCE}"
+        - OIM_HOST=oim${IDM_INSTANCE}
+        - SOA_HOST=soa${IDM_INSTANCE}
   #
   # The SOA Managed Server
   #
