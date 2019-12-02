@@ -98,14 +98,6 @@ USER root
 RUN $ORACLE_BASE/oraInventory/orainstRoot.sh && \
     $ORACLE_HOME/root.sh
 
-RUN mkdir -p $ORACLE_BASE/scripts/setup && \
-    mkdir -p $ORACLE_BASE/scripts/startup && \
-    ln -s $ORACLE_BASE/scripts /docker-entrypoint-initdb.d && \
-    mkdir -p $ORACLE_BASE/oradata && \
-    mkdir -p $ORACLE_HOME && \
-    chmod ug+x $ORACLE_BASE/*.sh && \
-    chown -R oracle:dba $ORACLE_BASE
-
 COPY scripts/setup/* $ORACLE_BASE/scripts/setup/
 RUN chmod ug+x $ORACLE_BASE/scripts/setup/*.sh
 
