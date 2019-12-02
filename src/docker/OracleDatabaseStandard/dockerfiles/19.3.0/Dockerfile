@@ -98,10 +98,10 @@ USER root
 RUN $ORACLE_BASE/oraInventory/orainstRoot.sh && \
     $ORACLE_HOME/root.sh
 
-COPY scripts/setup/* $ORACLE_BASE/scripts/setup/
+COPY --chown=oracle:dba scripts/setup/* $ORACLE_BASE/scripts/setup/
 RUN chmod ug+x $ORACLE_BASE/scripts/setup/*.sh
 
-COPY scripts/startup/* $ORACLE_BASE/scripts/startup/
+COPY --chown=oracle:dba scripts/startup/* $ORACLE_BASE/scripts/startup/
 RUN chmod ug+x $ORACLE_BASE/scripts/startup/*.sh
 
 USER oracle
