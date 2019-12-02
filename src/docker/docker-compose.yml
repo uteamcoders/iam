@@ -29,7 +29,8 @@ services:
   #
   idmas:
     image: oracle/idm:${DC_IDM_VERSION}
-    container_name: idmas
+    container_name: "idmas${IDM_INSTANCE}"
+    hostname: "idmas${IDM_INSTANCE}"
     depends_on:
       - "idmdb"
     command: /bin/bash -c "sleep 5s; /u01/oracle/dockertools/createDomainAndStart.sh"
@@ -44,6 +45,8 @@ services:
       - DB_PASSWORD=${ORACLE_PWD}
       - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
       - RCUPREFIX=${RCUPREFIX}
+      - OIM_HOST="oim${IDM_INSTANCE}"
+      - SOA_HOST="soa${IDM_INSTANCE}"
     build:
       context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
       args:
@@ -54,12 +57,15 @@ services:
         - DB_PASSWORD=${ORACLE_PWD}
         - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
         - RCUPREFIX=${RCUPREFIX}
+        - OIM_HOST="oim${IDM_INSTANCE}"
+        - SOA_HOST="soa${IDM_INSTANCE}"
   #
   # The SOA Managed Server
   #
-  soams:
+  soa:
     image: oracle/idm:${DC_IDM_VERSION}
-    container_name: soams
+    container_name: "soa${IDM_INSTANCE}"
+    hostname: "soa${IDM_INSTANCE}"
     depends_on:
       - "idmas"
     command: /bin/bash -c "/u01/oracle/dockertools/startMS.sh"
@@ -75,11 +81,12 @@ services:
   #
   # The OIM Managed Server
   #
-  idmms:
+  oim:
     image: oracle/idm:${DC_IDM_VERSION}
-    container_name: oimms
+    container_name: "oim${IDM_INSTANCE}"
+    hostname: "oim${IDM_INSTANCE}"
     depends_on:
-      - "soams"
+      - "soa"
     command: /bin/bash -c "/u01/oracle/dockertools/startMS.sh"
     ports:
       - "14000:14000"

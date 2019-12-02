@@ -195,6 +195,11 @@ fi
 
 if [ "$CONFIGURE_DOMAIN" = "true" ] 
 then
+  sed -i -e "s|###ADMIN_PASSWORD###|$ADMIN_PASSWORD|g" /u01/IdmDomain.properties
+  sed -i -e "s|###DB_SCHEMA_PASSWORD###|$DB_SCHEMA_PASSWORD|g" /u01/IdmDomain.properties
+  sed -i -e "s|###OIM_HOST###|$OIM_HOST|g" /u01/IdmDomain.properties
+  sed -i -e "s|###SOA_HOST###|$SOA_HOST|g" /u01/IdmDomain.properties
+
   cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
         -oracle_home $ORACLE_HOME \
         -java_home $JAVA_HOME \
@@ -206,7 +211,7 @@ then
   ${cfgCmd}
   retval=$?
 # https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.4/inoam/configuring-oracle-identity-governance-domain.html#GUID-D97A8D45-C3FD-49DB-BCF5-4372E37BE94F
-  $ORACLE_HOME/idm/server/bin/offlineConfigManager.sh
+  cd $ORACLE_HOME/idm/server/bin && ./offlineConfigManager.sh
   if [ $retval -ne 0 ];
   then
     echo "ERROR: Domain Configuration failed. Please check the logs"
