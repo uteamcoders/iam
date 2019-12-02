@@ -53,17 +53,14 @@ FROM store/oracle/serverjre:8
 ENV ORACLE_HOME=/u01/oracle \
     VOLUME_DIR=/u01/oracle/user_projects \
     SCRIPT_FILE=/u01/oracle/container-scripts/* \
-    DOMAIN_NAME="${DOMAIN_NAME:-infra_domain}" \
-    ADMIN_LISTEN_PORT="${ADMIN_LISTEN_PORT:-7001}" \
+    DOMAIN_NAME="${DOMAIN_NAME:-idm_domain}" \
     ADMIN_NAME="${ADMIN_NAME:-AdminServer}" \
-    ADMIN_HOST="${ADMIN_HOST:-IDMAdminContainer}" \
-    ADMINISTRATION_PORT_ENABLED="${ADMINISTRATION_PORT_ENABLED:-true}" \
+    ADMIN_HOST="${ADMIN_HOST:-idmas}" \
+    ADMINISTRATION_PORT_ENABLED="${ADMINISTRATION_PORT_ENABLED:-false}" \
     ADMINISTRATION_PORT="${ADMINISTRATION_PORT:-9002}" \
-    MANAGEDSERVER_PORT="${MANAGEDSERVER_PORT:-8001}" \
-    MANAGED_NAME="${MANAGED_NAME:-infraServer1}" \
-    RCUPREFIX="${RCUPREFIX:-INFRA01}" \
+    RCUPREFIX="${RCUPREFIX}" \
     PRODUCTION_MODE="${PRODUCTION_MODE:-prod}" \
-    CONNECTION_STRING=${CONNECTION_STRING:-InfraDB:1521/InfraPDB1.us.oracle.com} \
+    CONNECTION_STRING=${CONNECTION_STRING} \
     JAVA_OPTIONS="-Doracle.jdbc.fanEnabled=false -Dweblogic.StdoutDebugEnabled=false" \
     PATH=$PATH:/usr/java/default/bin:/u01/oracle/oracle_common/common/bin:/u01/oracle/wlserver/common/bin:/u01/oracle/container-scripts
 

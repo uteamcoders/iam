@@ -106,14 +106,9 @@ fi;
 
 if [ -z ${DB_SCHEMA_PASSWORD} ]
 then
-  # Auto generate Oracle Database Schema password
-  temp_pwd=$(rand_pwd)
-  #Password should not start with a number for database
-  f_str=`echo $temp_pwd|cut -c1|tr [0-9] [A-Z]`
-  s_str=`echo $temp_pwd|cut -c2-`
-  DB_SCHEMA_PASSWORD=${f_str}${s_str}
+  DB_SCHEMA_PASSWORD=${DB_PASSWORD}
   echo ""
-  echo "INFO: Database Schema password Auto Generated :"
+  echo "INFO: Database Schema password :"
   echo "  Database schema password: $DB_SCHEMA_PASSWORD"
   echo ""
 fi
@@ -199,7 +194,6 @@ fi
 
 if [ "$CONFIGURE_DOMAIN" = "true" ] 
 then
-#  cfgCmd="/u01/oracle/oracle_common/common/bin/wlst.sh -skipWLSModuleScanning /u01/oracle/dockertools/createDomain.py -oh $ORACLE_HOME -jh $JAVA_HOME -parent $DOMAIN_ROOT -name $DOMAIN_NAME -password $ADMIN_PASSWORD -rcuDb $CONNECTION_STRING -rcuPrefix $RCUPREFIX -rcuSchemaPwd $DB_SCHEMA_PASSWORD -domainType $DOMAIN_TYPE"
   cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
         -oracle_home $ORACLE_HOME \
         -java_home $JAVA_HOME \
