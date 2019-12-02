@@ -13,14 +13,14 @@ services:
     volumes:
       - "/home/oracle/oradata/§{IDM_INSTANCE}:/opt/oracle/oradata"
     environment:
-      - ORACLE_SID=${DC_ORCL_SID}
-      - ORACLE_PDB=${DC_ORCL_PDB}
+      - ORACLE_SID=${ORACLE_SID}
+      - ORACLE_PDB=${ORACLE_PDB}
       - ORACLE_PWD=${ORACLE_PWD}
     build:
       context: ./OracleDatabaseStandard/dockerfiles/${DC_IDM_DB_VERSION}
       args:
-        - ORACLE_SID=${DC_ORCL_SID}
-        - ORACLE_PDB=${DC_ORCL_PDB}
+        - ORACLE_SID=${ORACLE_SID}
+        - ORACLE_PDB=${ORCL_PDB}
         - ORACLE_PWD=${ORACLE_PWD}
   #
   # The SOA Admin Server
