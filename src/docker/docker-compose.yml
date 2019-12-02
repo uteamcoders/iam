@@ -89,3 +89,9 @@ services:
       - MANAGED_SERVER=oim_server1
     volumes:
       - "/home/oracle/IDM/${IDM_INSTANCE}:/u01/oracle/user_projects"
+
+# sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus system/SysMyPasswd123@//localhost:1521/IDMPDB
+# sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus / as sysdba
+# CREATE RESTORE POINT docker_after_first_start GUARANTEE FLASHBACK DATABASE;
+# CREATE RESTORE POINT docker_after_first_start;
+# SELECT NAME, SCN, TIME, DATABASE_INCARNATION#,GUARANTEE_FLASHBACK_DATABASE,STORAGE_SIZE FROM V$RESTORE_POINT;

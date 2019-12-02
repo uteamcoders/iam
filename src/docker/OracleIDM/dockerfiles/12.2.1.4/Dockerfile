@@ -37,7 +37,7 @@ RUN mkdir -p /u01 && \
 # -------------------------------------------------------------
 ## Copy packages
 ## -------------
-COPY install.file oraInst.loc /u01/
+# COPY install.file oraInst.loc /u01/
 RUN chown oracle:oracle -R /u01
 
 # Install
