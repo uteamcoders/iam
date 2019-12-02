@@ -16,12 +16,14 @@ services:
       - ORACLE_SID=${ORACLE_SID}
       - ORACLE_PDB=${ORACLE_PDB}
       - ORACLE_PWD=${ORACLE_PWD}
+      - DB_EDITION=${DC_IDM_DB_EDITION}
     build:
       context: ./OracleDatabaseStandard/dockerfiles/${DC_IDM_DB_VERSION}
       args:
         - ORACLE_SID=${ORACLE_SID}
         - ORACLE_PDB=${ORACLE_PDB}
         - ORACLE_PWD=${ORACLE_PWD}
+        - DB_EDITION=${DC_IDM_DB_EDITION}
   #
   # The SOA Admin Server
   #
