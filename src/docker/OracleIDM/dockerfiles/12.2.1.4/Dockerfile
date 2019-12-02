@@ -101,7 +101,7 @@ RUN  yum install -y hostname &&    \
 #
 USER oracle
 COPY install/* /u01/
-RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.6.0/weblogic-deploy.zip -o /u01/weblogic-deploy.zip && \
+RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.6.0/weblogic-deploy.zip -L -o /u01/weblogic-deploy.zip && \
     unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy && \
     find . -type f -iname "*.sh" -exec chmod +x {} \;
 
