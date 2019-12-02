@@ -104,17 +104,15 @@ RUN mkdir -p $ORACLE_BASE/scripts/setup && \
     mkdir -p $ORACLE_BASE/oradata && \
     mkdir -p $ORACLE_HOME && \
     chmod ug+x $ORACLE_BASE/*.sh && \
-    yum -y install oracle-database-preinstall-19c openssl && \
-    rm -rf /var/cache/yum && \
     chown -R oracle:dba $ORACLE_BASE
 
 USER oracle
 WORKDIR /home/oracle
 
-COPY scripts/setup/* $ORACLE_BASE/scripts/setup
+COPY scripts/setup/* $ORACLE_BASE/scripts/setup/
 RUN chmod ug+x $ORACLE_BASE/scripts/setup/*.sh
 
-COPY scripts/startup/* $ORACLE_BASE/scripts/startup
+COPY scripts/startup/* $ORACLE_BASE/scripts/startup/
 RUN chmod ug+x $ORACLE_BASE/scripts/startup/*.sh
 
 VOLUME ["$ORACLE_BASE/oradata"]
