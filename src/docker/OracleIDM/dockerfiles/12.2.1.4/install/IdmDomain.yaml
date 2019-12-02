@@ -15,10 +15,10 @@ topology:
     Cluster:
         oim_cluster:
             CoherenceClusterSystemResource: defaultCoherenceCluster
-            ClusterAddress: '@@OIM_HOST@@:14000'
+            ClusterAddress: '###OIM_HOST###:14000'
         soa_cluster:
             CoherenceClusterSystemResource: defaultCoherenceCluster
-            ClusterAddress: '@@SOA_HOST@@:7003'
+            ClusterAddress: '###SOA_HOST###:7003'
     Server:
         AdminServer:
             ListenPort: 7001
