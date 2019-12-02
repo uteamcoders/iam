@@ -101,7 +101,9 @@ RUN $ORACLE_BASE/oraInventory/orainstRoot.sh && \
 USER oracle
 WORKDIR /home/oracle
 
-RUN ln -s $ORACLE_BASE/scripts /docker-entrypoint-initdb.d && \
+RUN mkdir -p $ORACLE_BASE/scripts/setup && \
+    mkdir $ORACLE_BASE/scripts/startup && \
+    ln -s $ORACLE_BASE/scripts /docker-entrypoint-initdb.d && \
     mkdir $ORACLE_BASE/oradata && \
     mkdir -p $ORACLE_HOME && \
     chmod ug+x $ORACLE_BASE/*.sh && \
