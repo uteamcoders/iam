@@ -20,7 +20,7 @@ services:
       context: ./OracleDatabaseStandard/dockerfiles/${DC_IDM_DB_VERSION}
       args:
         - ORACLE_SID=${ORACLE_SID}
-        - ORACLE_PDB=${ORCL_PDB}
+        - ORACLE_PDB=${ORACLE_PDB}
         - ORACLE_PWD=${ORACLE_PWD}
   #
   # The SOA Admin Server
@@ -38,7 +38,7 @@ services:
     environment:
       - ADMIN_HOST=${ADMIN_HOST}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-      - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${DC_ORCL_PDB}
+      - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${ORACLE_PDB}
       - DB_PASSWORD=${ORACLE_PWD}
       - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
       - RCUPREFIX=${RCUPREFIX}
@@ -48,7 +48,7 @@ services:
         - ADMIN_HOST=${ADMIN_HOST}
         - ADMIN_PORT=${ADMIN_PORT}
         - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-        - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${DC_ORCL_PDB}
+        - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${ORACLE_PDB}
         - DB_PASSWORD=${ORACLE_PWD}
         - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
         - RCUPREFIX=${RCUPREFIX}
