@@ -11,7 +11,7 @@ services:
       - "${DC_ORCL_OEM_PORT}:5500"
     container_name: idmdb
     volumes:
-      - "/home/oracle/oradata/§{IDM_INSTANCE}:/opt/oracle/oradata"
+      - "/home/oracle/oradata/${IDM_INSTANCE}:/opt/oracle/oradata"
     environment:
       - ORACLE_SID=${ORACLE_SID}
       - ORACLE_PDB=${ORACLE_PDB}
