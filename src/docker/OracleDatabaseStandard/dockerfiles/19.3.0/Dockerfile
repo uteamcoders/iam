@@ -106,14 +106,15 @@ RUN mkdir -p $ORACLE_BASE/scripts/setup && \
     chmod ug+x $ORACLE_BASE/*.sh && \
     chown -R oracle:dba $ORACLE_BASE
 
-USER oracle
-WORKDIR /home/oracle
-
 COPY scripts/setup/* $ORACLE_BASE/scripts/setup/
 RUN chmod ug+x $ORACLE_BASE/scripts/setup/*.sh
 
 COPY scripts/startup/* $ORACLE_BASE/scripts/startup/
 RUN chmod ug+x $ORACLE_BASE/scripts/startup/*.sh
+
+USER oracle
+WORKDIR /home/oracle
+
 
 VOLUME ["$ORACLE_BASE/oradata"]
 EXPOSE 1521 5500
