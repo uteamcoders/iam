@@ -33,6 +33,8 @@ RUN mkdir -p /u01 && \
     chmod a+xr /u01 && \
     useradd -b /u01 -d /u01/oracle -m -s /bin/bash oracle
 
+RUN yum install unzip
+
 # Environment variables required for this build (do NOT change)
 # -------------------------------------------------------------
 ## Copy packages
