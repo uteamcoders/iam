@@ -109,8 +109,6 @@ RUN mkdir -p $ORACLE_BASE/scripts/setup && \
     mkdir -p $ORACLE_BASE/oradata && \
     mkdir -p $ORACLE_HOME && \
     chmod ug+x $ORACLE_BASE/*.sh && \
-    ln -s $ORACLE_BASE/$PWD_FILE /home/oracle/ && \
-    echo oracle:oracle | chpasswd && \
     chown -R oracle:dba $ORACLE_BASE
 COPY scripts/setup/* $ORACLE_BASE/scripts/setup
 RUN chmod ug+x $ORACLE_BASE/scripts/setup/*.sh
