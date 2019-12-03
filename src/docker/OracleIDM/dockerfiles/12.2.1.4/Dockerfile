@@ -104,6 +104,8 @@ COPY install/* /u01/
 RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.6.0/weblogic-deploy.zip -L -o /u01/weblogic-deploy.zip && \
     unzip /u01/weblogic-deploy.zip && cd /u01/weblogic-deploy
 
+COPY install/WDT/lib/typedefs/OIM.json /u01/weblogic-deploy/lib/typedefs/OIM.json
+
 RUN cd /u01 && \
   $JAVA_HOME/bin/java -jar /u01/$FMW_JAR1 -silent -responseFile /u01/idm.12.2.1.4.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
   rm -fr /u01/*.jar /u01/*.response /u01/*.loc

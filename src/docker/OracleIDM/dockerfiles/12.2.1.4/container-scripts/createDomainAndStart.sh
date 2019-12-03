@@ -209,7 +209,7 @@ then
         -oracle_home $ORACLE_HOME \
         -java_home $JAVA_HOME \
         -domain_home $DOMAIN_HOME \
-        -domain_type WLS \
+        -domain_type OIM \
         -model_file /u01/IdmDomain.yaml \
         -variable_file  /u01/IdmDomain.properties \
         -archive_file /u01/IdmDomain.zip"

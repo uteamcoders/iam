@@ -47,6 +47,8 @@ services:
       - RCUPREFIX=${RCUPREFIX}
       - OIM_HOST=oim${IDM_INSTANCE}
       - SOA_HOST=soa${IDM_INSTANCE}
+      - DOMAIN_ROOT=/u01/oracle/user_projects/domains
+      - DOMAIN_NAME=idm_domain
     build:
       context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
       args:

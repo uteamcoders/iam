@@ -1,0 +1,17 @@
+{
+  "name": "OIM",
+  "description": "OIM type domain definitions",
+  "versions": {
+    "12.2.1.4": "OIM_12214"
+  },
+  "definitions": {
+    "OIM_12214": {
+      "baseTemplate": "Basic WebLogic Server Domain",
+      "extensionTemplates": [
+        "Oracle Identity Manager"
+      ],
+      "serverGroupsToTarget": [ "JRF-MAN-SVR", "WSMPM-MAN-SVR",  "SOA-MGD-SVRS" ],
+      "rcuSchemas": [ "STB", "WLS", "MDS", "IAU", "IAU_VIEWER", "IAU_APPEND", "OPSS", "UCSUMS", "SOAINFRA" ]
+    }
+  }
+}

@@ -7,7 +7,7 @@ topology:
     JTA:
         TimeoutSeconds: 1200
     NMProperties:
-        JavaHome: '@@JAVA_HOME@@'
+        JavaHome: '/usr/java/default'
         LogFile: '@@DOMAIN_HOME@@/nodemanager/nodemanager.log'
         DomainsFile: '@@DOMAIN_HOME@@/nodemanager/nodemanager.domains'
         NodeManagerHome: '@@DOMAIN_HOME@@/nodemanager'
@@ -89,37 +89,6 @@ topology:
             ListenPort: 7100
             SSL:
                 ListenPort: 8100
-    SecurityConfiguration:
-        NodeManagerPasswordEncrypted: '@@AdminUserName@@'
-        CredentialEncrypted: '@@AdminPassword@@'
-        UseKSSForDemo: true
-        Realm:
-            myrealm:
-                Adjudicator:
-                    DefaultAdjudicator:
-                        DefaultAdjudicator:
-                AuthenticationProvider:
-                    Trust Service Identity Asserter:
-                        weblogic.management.security.ProviderMBean:
-                    DefaultIdentityAsserter:
-                        DefaultIdentityAsserter:
-                            ActiveType: [ AuthenticatedUser, 'weblogic-jwt-token' ]
-                Authorizer:
-                    XACMLAuthorizer:
-                        XACMLAuthorizer:
-                            PolicyDeploymentEnabled: true
-                CertPathProvider:
-                    WebLogicCertPathProvider:
-                        WebLogicCertPathProvider:
-                CredentialMapper:
-                    DefaultCredentialMapper:
-                        DefaultCredentialMapper:
-                PasswordValidator:
-                    SystemPasswordValidator:
-                        SystemPasswordValidator:
-                RoleMapper:
-                    XACMLRoleMapper:
-                        XACMLRoleMapper:
 resources:
     SelfTuning:
         Capacity:
@@ -387,7 +356,7 @@ resources:
                     JNDIName: jdbc/WLSSchemaDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -409,7 +378,7 @@ resources:
                     JNDIName: jdbc/LocalSvcTblDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -430,7 +399,7 @@ resources:
                     JNDIName: jdbc/OpssDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -445,7 +414,7 @@ resources:
                     JNDIName: jdbc/AuditViewDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -460,7 +429,7 @@ resources:
                     JNDIName: jdbc/AuditAppendDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -480,7 +449,7 @@ resources:
                     JNDIName: jdbc/mds/owsm
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -507,7 +476,7 @@ resources:
                     JNDIName: jdbc/OraSDPMDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
                         user:
@@ -534,7 +503,7 @@ resources:
                     JNDIName: jdbc/SOADataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
                         user:
@@ -561,7 +530,7 @@ resources:
                     JNDIName: jdbc/EDNDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
                         user:
@@ -587,7 +556,7 @@ resources:
                     JNDIName: jdbc/EDNLocalTxDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -609,7 +578,7 @@ resources:
                     JNDIName: jdbc/SOALocalTxDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -631,7 +600,7 @@ resources:
                     JNDIName: jdbc/mds/MDS_LocalTxDataSource
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -660,7 +629,7 @@ resources:
                     JNDIName: jdbc/operationsDB
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
                         user:
@@ -696,7 +665,7 @@ resources:
                     JNDIName: jdbc/soaOIMLookupDB
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
                         user:
@@ -730,7 +699,7 @@ resources:
                     JNDIName: jdbc/mds/MDS_REPOS
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -760,7 +729,7 @@ resources:
                     JNDIName: jdbc/oimJMSStoreDS
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
@@ -790,7 +759,7 @@ resources:
                     JNDIName: jdbc/ApplicationDBDS
                 JDBCDriverParams:
                     URL: '@@CONNECT_STR@@'
-                    PasswordEncrypted: '--FIX ME--'
+                    PasswordEncrypted: '@@DbPassword@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
                         user:
