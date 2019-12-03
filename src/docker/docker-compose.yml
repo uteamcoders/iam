@@ -54,7 +54,7 @@ services:
       - DISPLAY=$DISPLAY
     build:
       context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
-      dockerfile: Dockerfile.idminstall
+      dockerfile: Dockerfile.idm.install
       args:
         - ADMIN_HOST=${ADMIN_HOST}
         - ADMIN_PORT=${ADMIN_PORT}
