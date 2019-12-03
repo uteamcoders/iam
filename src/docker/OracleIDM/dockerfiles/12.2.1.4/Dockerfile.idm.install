@@ -14,7 +14,7 @@
 #
 # Pull base image
 # ---------------
-FROM oracle/idm/install:12.2.1.4
+FROM oracle/idm:12.2.1.4
 
 # Maintainer
 # ----------
