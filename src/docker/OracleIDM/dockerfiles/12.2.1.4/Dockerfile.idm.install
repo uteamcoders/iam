@@ -22,6 +22,9 @@ MAINTAINER Monica Riccelli <monica.riccelli@oracle.com>
 
 USER root
 RUN yum install -y libXext
+RUN yum install -y libXext.x86_64
+RUN yum install -y libXrender.x86_64
+RUN yum install -y libXtst.x86_64
 
 USER oracle
 #
