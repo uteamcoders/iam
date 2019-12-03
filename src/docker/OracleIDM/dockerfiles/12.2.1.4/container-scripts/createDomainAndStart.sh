@@ -197,7 +197,7 @@ if [ "$CONFIGURE_DOMAIN" = "true" ]
 then
   export CONFIG_JVM_ARGS=-DSchemaTypeSystemName=TrustServiceIdentityAsserter
   $ORACLE_HOME/oracle_common/common/bin/prepareCustomProvider.sh -mjf=$ORACLE_HOME/oracle_common/modules/oracle.jps/jps-wls-trustprovider.jar -out $ORACLE_HOME/oracle_common/lib/schematypes/jps-wls-trustprovider.schema.jar
-  cfgCmd="ORACLE_HOME/oracle_common/common/bin/config.sh"
+  cfgCmd="$ORACLE_HOME/oracle_common/common/bin/config.sh"
   ${cfgCmd}
   retval=$?
 # https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.4/inoam/configuring-oracle-identity-governance-domain.html#GUID-D97A8D45-C3FD-49DB-BCF5-4372E37BE94F
