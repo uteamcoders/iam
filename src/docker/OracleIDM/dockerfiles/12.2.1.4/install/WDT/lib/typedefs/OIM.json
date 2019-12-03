@@ -10,7 +10,8 @@
       "extensionTemplates": [
         "Oracle Identity Manager"
       ],
-      "serverGroupsToTarget": [ "JRF-MAN-SVR", "WSMPM-MAN-SVR",  "SOA-MGD-SVRS" ]
+      "serverGroupsToTarget": [ "JRF-MAN-SVR", "WSMPM-MAN-SVR",  "SOA-MGD-SVRS" ],
+      "rcuSchemas": [ ]
     }
   }
 }

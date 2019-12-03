@@ -199,11 +199,13 @@ then
   sed -i -e "s|###DB_SCHEMA_PASSWORD###|$DB_SCHEMA_PASSWORD|g" /u01/IdmDomain.properties
   sed -i -e "s|###OIM_HOST###|$OIM_HOST|g" /u01/IdmDomain.properties
   sed -i -e "s|###SOA_HOST###|$SOA_HOST|g" /u01/IdmDomain.properties
+  sed -i -e "s|###CONNECT_STR###|$CONNECT_STR|g" /u01/IdmDomain.properties
 
   sed -i -e "s|###ADMIN_PASSWORD###|$ADMIN_PASSWORD|g" /u01/IdmDomain.yaml
   sed -i -e "s|###DB_SCHEMA_PASSWORD###|$DB_SCHEMA_PASSWORD|g" /u01/IdmDomain.yaml
   sed -i -e "s|###OIM_HOST###|$OIM_HOST|g" /u01/IdmDomain.yaml
   sed -i -e "s|###SOA_HOST###|$SOA_HOST|g" /u01/IdmDomain.yaml
+  sed -i -e "s|###CONNECT_STR###|$CONNECT_STR|g" /u01/IdmDomain.yaml
 
   cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
         -oracle_home $ORACLE_HOME \
