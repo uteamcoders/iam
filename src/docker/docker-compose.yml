@@ -102,11 +102,11 @@ services:
   #
   # Volumes
   #
-  volumes:
-    oimdatabase:
-      name: oimdatabase
-    domainhome:
-      name: domainhome
+volumes:
+  oimdatabase:
+    name: oimdatabase
+  domainhome:
+    name: domainhome
 
 # sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus system/SysMyPasswd123@//localhost:1521/IDMPDB
 # sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus / as sysdba
