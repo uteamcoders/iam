@@ -20,6 +20,9 @@ FROM oracle/idm:12.2.1.4
 # ----------
 MAINTAINER Monica Riccelli <monica.riccelli@oracle.com>
 
+USER root
+RUN yum install -y libXext
+
 USER oracle
 #
 # Define default command to start bash.
