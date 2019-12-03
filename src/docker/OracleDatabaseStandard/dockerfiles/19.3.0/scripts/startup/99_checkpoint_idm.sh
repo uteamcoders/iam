@@ -14,7 +14,7 @@ if [ -d "$SCRIPTS_ROOT" ] && [ -n "$(ls -A $SCRIPTS_ROOT)" ]; then
   echo "";
   echo "Executing save checkpoint"
   checkpoint="docker_after_start_$(date +"%FT%H%M%S")";
-  f="$SCRIPTS_ROOT/checkpoint$checkpoint";
+  f="$SCRIPTS_ROOT/checkpoint${checkpoint}.sql";
   echo "CREATE RESTORE POINT $checkpoint;" > $f;
   echo "$0: running $f"; echo "exit" | $ORACLE_HOME/bin/sqlplus -s "/ as sysdba" @"$f";
   rm -f $f;
