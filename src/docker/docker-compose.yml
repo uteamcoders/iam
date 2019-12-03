@@ -9,9 +9,10 @@ services:
     ports:
       - "${DC_ORCL_PORT}:1521"
       - "${DC_ORCL_OEM_PORT}:5500"
-    container_name: idmdb
+    container_name: "idmdb${IDM_INSTANCE}"
+    hostname: "idmdb${IDM_INSTANCE}"
     volumes:
-      - "/home/oracle/db/${IDM_INSTANCE}:/opt/oracle/oradata"
+      - oimdatabase:/opt/oracle/oradata
     environment:
       - ORACLE_SID=${ORACLE_SID}
       - ORACLE_PDB=${ORACLE_PDB}
@@ -37,7 +38,7 @@ services:
     ports:
       - "7001:7001"
     volumes:
-      - "/home/oracle/IDM/${IDM_INSTANCE}:/u01/oracle/user_projects"
+      - "domainhome:/u01/oracle/user_projects"
     environment:
       - ADMIN_HOST=${ADMIN_HOST}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
@@ -79,7 +80,7 @@ services:
       - ADMIN_PORT=${ADMIN_PORT}
       - MANAGED_SERVER=soa_server1
     volumes:
-      - "/home/oracle/IDM/${IDM_INSTANCE}:/u01/oracle/user_projects"
+      - "domainhome:/u01/oracle/user_projects"
   #
   # The OIM Managed Server
   #
@@ -97,7 +98,15 @@ services:
       - ADMIN_PORT=${ADMIN_PORT}
       - MANAGED_SERVER=oim_server1
     volumes:
-      - "/home/oracle/IDM/${IDM_INSTANCE}:/u01/oracle/user_projects"
+      - "domainhome:/u01/oracle/user_projects"
+  #
+  # Volumes
+  #
+  volumes:
+    oimdatabase:
+      name: oimdatabase
+    domainhome:
+      name: domainhome
 
 # sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus system/SysMyPasswd123@//localhost:1521/IDMPDB
 # sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus / as sysdba

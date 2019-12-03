@@ -1,6 +1,15 @@
 domainInfo:
     AdminUserName: '@@PROP:AdminUserName@@'
     AdminPassword: '@@PROP:AdminPassword@@'
+    OIMCredentials:
+        oim_keystore_user: 'weblogic'
+        oim_keystore_password: 'welcome1'
+        oim_schema_user: 'weblogic'
+        oim_schema_password: 'welcome1'
+        oim_sysadmin_user: 'weblogic'
+        oim_sysadmin_password: 'welcome1'
+        oim_weblogic_admin_user: 'weblogic'
+        oim_weblogic_admin_password: 'welcome1'
 topology:
     Name: idm_domain
     ParallelDeployApplicationModules: true
