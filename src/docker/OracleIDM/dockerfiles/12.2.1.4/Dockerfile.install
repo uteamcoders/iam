@@ -1,0 +1,28 @@
+#
+# Copyright (c) 2016-2017 Oracle and/or its affiliates. All rights reserved.
+#
+# Licensed under the Universal Permissive License v 1.0 as shown at 
+# http://oss.oracle.com/licenses/upl.
+#
+# ORACLE DOCKERFILES PROJECT
+# --------------------------
+# This is the Dockerfile for Oracle IDM
+#
+# REQUIRED FILES TO BUILD THIS IMAGE
+# ----------------------------------
+# See idm.download file in the install directory
+#
+# Pull base image
+# ---------------
+FROM oracle/idm/install:12.2.1.4
+
+# Maintainer
+# ----------
+MAINTAINER Monica Riccelli <monica.riccelli@oracle.com>
+
+USER oracle
+#
+# Define default command to start bash.
+#
+WORKDIR $ORACLE_HOME
+CMD ["/u01/oracle/dockertools/createDomainAndStart.sh"]

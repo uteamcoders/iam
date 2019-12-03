@@ -118,7 +118,7 @@ USER oracle
 # Define default command to start bash.
 #
 WORKDIR $ORACLE_HOME
-CMD ["/u01/oracle/dockertools/createDomainAndStart.sh"]
+CMD ["/u01/oracle/dockertools/startAS.sh"]
 
 
 # weblogic-deploy/bin/discoverDomain.sh -oracle_home /home/ivasi/Oracle/Middleware/Oracle_Home -domain_home /home/ivasi/Oracle/Middleware/Oracle_Home/user_projects/domains/idm_domain -archive_file IdmDomain.zip -model_file IdmDomain.yaml
