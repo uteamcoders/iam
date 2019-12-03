@@ -206,7 +206,8 @@ then
   sed -i -e "s|###OIM_HOST###|$OIM_HOST|g" /u01/IdmDomain.yaml
   sed -i -e "s|###SOA_HOST###|$SOA_HOST|g" /u01/IdmDomain.yaml
   sed -i -e "s|###CONNECT_STR###|$CONNECT_STR|g" /u01/IdmDomain.yaml
-
+  export CONFIG_JVM_ARGS=-DSchemaTypeSystemName=TrustServiceIdentityAsserter
+  $ORACLE_HOME/oracle_common/common/bin/prepareCustomProvider.sh -mjf=$ORACLE_HOME/oracle_common/modules/oracle.jps/jps-wls-trustprovider.jar -out $ORACLE_HOME/oracle_common/lib/schematypes/jps-wls-trustprovider.schema.jar
   cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
         -oracle_home $ORACLE_HOME \
         -java_home $JAVA_HOME \

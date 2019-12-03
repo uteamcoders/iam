@@ -120,6 +120,11 @@ topology:
                 RoleMapper:
                     XACMLRoleMapper:
                         XACMLRoleMapper:
+    Security:
+        User:
+            weblogic:
+                Password: '@@PROP:AdminPassword@@'
+                GroupMemberOf: [ Administrators ]
 resources:
     SelfTuning:
         Capacity:

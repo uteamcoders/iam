@@ -8,6 +8,7 @@
     "OIM_12214": {
       "baseTemplate": "Basic WebLogic Server Domain",
       "extensionTemplates": [
+        "Oracle JRF",
         "Oracle Identity Manager"
       ],
       "serverGroupsToTarget": [ "JRF-MAN-SVR", "WSMPM-MAN-SVR",  "SOA-MGD-SVRS" ],
