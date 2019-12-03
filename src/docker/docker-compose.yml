@@ -26,47 +26,7 @@ services:
         - ORACLE_PWD=${ORACLE_PWD}
         - DB_EDITION=${DC_IDM_DB_EDITION}
   #
-  # The Install domain container
-  #
-  idminstall:
-    image: oracle/idm/install:${DC_IDM_VERSION}
-    container_name: "idminstall${IDM_INSTANCE}"
-    hostname: "idminstall${IDM_INSTANCE}"
-    depends_on:
-      - "idmdb"
-    command: /bin/bash -c "sleep 5s; /u01/oracle/dockertools/createDomainAndStart.sh"
-    ports:
-      - "7001:7001"
-    volumes:
-      - "domainhome:/u01/oracle/user_projects"
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    environment:
-      - ADMIN_HOST=${ADMIN_HOST}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-      - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${ORACLE_PDB}
-      - DB_PASSWORD=${ORACLE_PWD}
-      - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
-      - RCUPREFIX=${RCUPREFIX}
-      - OIM_HOST=oim${IDM_INSTANCE}
-      - SOA_HOST=soa${IDM_INSTANCE}
-      - DOMAIN_ROOT=/u01/oracle/user_projects/domains
-      - DOMAIN_NAME=idm_domain
-      - DISPLAY=$DISPLAY
-    build:
-      context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
-      dockerfile: Dockerfile.idm.install
-      args:
-        - ADMIN_HOST=${ADMIN_HOST}
-        - ADMIN_PORT=${ADMIN_PORT}
-        - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-        - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${ORACLE_PDB}
-        - DB_PASSWORD=${ORACLE_PWD}
-        - DB_SCHEMA_PASSWORD=${DB_SCHEMA_PASSWORD}
-        - RCUPREFIX=${RCUPREFIX}
-        - OIM_HOST=oim${IDM_INSTANCE}
-        - SOA_HOST=soa${IDM_INSTANCE}
-  #
-  # The Admin Server
+  # The SOA Admin Server
   #
   idmas:
     image: oracle/idm:${DC_IDM_VERSION}
@@ -74,7 +34,7 @@ services:
     hostname: "idmas${IDM_INSTANCE}"
     depends_on:
       - "idmdb"
-    command: /bin/bash -c "sleep 5s; /u01/oracle/dockertools/startAS.sh"
+    command: /bin/bash -c "sleep 5s; /u01/oracle/dockertools/createDomainAndStart.sh"
     ports:
       - "7001:7001"
     volumes:
@@ -102,7 +62,6 @@ services:
         - RCUPREFIX=${RCUPREFIX}
         - OIM_HOST=oim${IDM_INSTANCE}
         - SOA_HOST=soa${IDM_INSTANCE}
-
   #
   # The SOA Managed Server
   #
@@ -143,10 +102,11 @@ services:
   #
   # Volumes
   #
-
-volumes:
-  oimdatabase:
-  domainhome:
+  volumes:
+    oimdatabase:
+      name: oimdatabase
+    domainhome:
+      name: domainhome
 
 # sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus system/SysMyPasswd123@//localhost:1521/IDMPDB
 # sudo /usr/local/bin/docker-compose exec idmdb /opt/oracle/product/19c/dbhome_1/bin/sqlplus / as sysdba
