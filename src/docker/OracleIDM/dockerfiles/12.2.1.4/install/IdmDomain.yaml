@@ -400,7 +400,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/WLSSchemaDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.WLSSchemaDataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -422,7 +422,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/LocalSvcTblDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.LocalSvcTblDataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -443,7 +443,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/OpssDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.opss-data-source.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -458,7 +458,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/AuditViewDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.opss-audit-viewDS.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -473,7 +473,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/AuditAppendDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.opss-audit-DBDS.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -493,7 +493,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/mds/owsm
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.mds-owsm.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -520,7 +520,7 @@ resources:
                     GlobalTransactionsProtocol: TwoPhaseCommit
                     JNDIName: jdbc/OraSDPMDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.OraSDPMDataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
@@ -547,7 +547,7 @@ resources:
                     GlobalTransactionsProtocol: TwoPhaseCommit
                     JNDIName: jdbc/SOADataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.SOADataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
@@ -574,7 +574,7 @@ resources:
                     GlobalTransactionsProtocol: TwoPhaseCommit
                     JNDIName: jdbc/EDNDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.EDNDataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
@@ -600,7 +600,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/EDNLocalTxDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.EDNLocalTxDataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -622,7 +622,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/SOALocalTxDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.SOALocalTxDataSource.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -644,7 +644,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/mds/MDS_LocalTxDataSource
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.mds-soa.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -673,7 +673,7 @@ resources:
                     GlobalTransactionsProtocol: TwoPhaseCommit
                     JNDIName: jdbc/operationsDB
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.oimOperationsDB.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
@@ -709,7 +709,7 @@ resources:
                     GlobalTransactionsProtocol: TwoPhaseCommit
                     JNDIName: jdbc/soaOIMLookupDB
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.soaOIMLookupDB.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.xa.client.OracleXADataSource
                     Properties:
@@ -743,7 +743,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/mds/MDS_REPOS
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.mds-oim.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -773,7 +773,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/oimJMSStoreDS
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.oimJMSStoreDS.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:
@@ -803,7 +803,7 @@ resources:
                 JDBCDataSourceParams:
                     JNDIName: jdbc/ApplicationDBDS
                 JDBCDriverParams:
-                    URL: '###CONNECTION_STR###'
+                    URL: '###CONNECTION_STRING###'
                     PasswordEncrypted: '@@PROP:JDBC.ApplicationDB.PasswordEncrypted@@'
                     DriverName: oracle.jdbc.OracleDriver
                     Properties:

@@ -15,7 +15,7 @@ export DOMAIN_HOME=${DOMAIN_ROOT}/${DOMAIN_NAME}
 function _int() {
   echo "INFO: Stopping container."
   echo "INFO:   SIGINT received, shutting down Admin Server!"
-  /u01/oracle/user_projects/domains/base_domain/bin/stopWebLogic.sh
+  /u01/oracle/user_projects/domains/idm_domain/bin/stopWebLogic.sh
   exit;
 }
 
@@ -23,14 +23,14 @@ function _int() {
 function _term() {
   echo "INFO: Stopping container."
   echo "INFO:   SIGTERM received, shutting down Admin Server!"
-  /u01/oracle/user_projects/domains/base_domain/bin/stopWebLogic.sh
+  /u01/oracle/user_projects/domains/idm_domain/bin/stopWebLogic.sh
   exit;
 }
 
 #==================================================
 function _kill() {
   echo "INFO: SIGKILL received, shutting down Admin Server!"
-  /u01/oracle/user_projects/domains/base_domain/bin/stopWebLogic.sh
+  /u01/oracle/user_projects/domains/idm_domain/bin/stopWebLogic.sh
   exit;
 }
 
