@@ -119,7 +119,7 @@ export vol_name=u01
 
 echo -e $DB_PASSWORD"\n"$DB_SCHEMA_PASSWORD > /tmp/pwd.txt
 
-CTR_DIR=/$vol_name/oracle/user_projects/domains/${DOMAIN_NAME}
+INSTALL_DOMAIN_DIR=/$vol_name/oracle/user_projects/domains/install_${DOMAIN_NAME}
 
 #
 # Creating schemas needed for sample domain ####
@@ -128,20 +128,20 @@ CTR_DIR=/$vol_name/oracle/user_projects/domains/${DOMAIN_NAME}
 RUN_RCU="true"
 CONFIGURE_DOMAIN="true"
 
-if [ -d  $CTR_DIR ] 
+if [ -d  $INSTALL_DOMAIN_DIR ] 
 then
   # First load the Env Data from the env file... 
-  if [ -e $CTR_DIR/contenv.sh ] 
+  if [ -e $INSTALL_DOMAIN_DIR/contenv.sh ] 
   then
-    . $CTR_DIR/contenv.sh
+    . $INSTALL_DOMAIN_DIR/contenv.sh
     #reset the JDBC URL
     export jdbc_url="jdbc:oracle:thin:@"$CONNECTION_STRING
   fi
 else
-  mkdir -p $CTR_DIR
+  mkdir -p $INSTALL_DOMAIN_DIR
 fi
 
-if [ -e $CTR_DIR/RCU.$RCUPREFIX.suc ] 
+if [ -e $INSTALL_DOMAIN_DIR/RCU.$RCUPREFIX.suc ] 
 then
     #RCU has already been executed successfully, no need to rerun
     RUN_RCU="false"
@@ -167,11 +167,11 @@ then
     exit
   else
     # Write the rcu suc file... 
-    touch $CTR_DIR/RCU.$RCUPREFIX.suc
+    touch $INSTALL_DOMAIN_DIR/RCU.$RCUPREFIX.suc
     	
     # Write the env file.. such that the passwords etc.. will be saved and we will 
     # be able to restart from the RCU
-    cat > $CTR_DIR/contenv.sh <<EOF
+    cat > $INSTALL_DOMAIN_DIR/contenv.sh <<EOF
 CONNECTION_STRING=$CONNECTION_STRING
 RCUPREFIX=$RCUPREFIX
 ADMIN_PASSWORD=$ADMIN_PASSWORD
@@ -187,7 +187,7 @@ rm -f "/tmp/pwd.txt"
 #
 # Configuration of IDM domain
 #=============================
-if [ -e $CTR_DIR/IDM.DOMAINCFG.suc ] 
+if [ -e $INSTALL_DOMAIN_DIR/IDM.DOMAINCFG.suc ] 
 then
   CONFIGURE_DOMAIN="false"
   echo "INFO: Domain Already configured. Skipping..."
@@ -218,10 +218,10 @@ then
     cd $ORACLE_HOME/idm/server/bin && ./offlineConfigManager.sh
     updateListenAddress
     # Write the Domain suc file... 
-    touch $CTR_DIR/IDM.DOMAINCFG.suc
-    echo ${cfgCmd} >> $CTR_DIR/IDM.DOMAINCFG.suc
+    touch $INSTALL_DOMAIN_DIR/IDM.DOMAINCFG.suc
+    echo ${cfgCmd} >> $INSTALL_DOMAIN_DIR/IDM.DOMAINCFG.suc
 
-    cat > $CTR_DIR/contenv.sh <<EOF
+    cat > $INSTALL_DOMAIN_DIR/contenv.sh <<EOF
 CONNECTION_STRING=$CONNECTION_STRING
 RCUPREFIX=$RCUPREFIX
 ADMIN_PASSWORD=$ADMIN_PASSWORD
