@@ -27,6 +27,7 @@ if [ -d "$SCRIPTS_ROOT" ] && [ -n "$(ls -A $SCRIPTS_ROOT)" ]; then
 
   for f in $SCRIPTS_ROOT/*; do
       /u01/oracle/dockertools/replace_vars.sh "$f"
+      cat "$f"
       case "$f" in
           *.sh)     echo "$0: running $f"; . "$f" ;;
           *.py)    echo "$0: running $f"; echo "exit" | $ORACLE_HOME/oracle_common/common/bin/wlst.sh "$f"; echo ;;
