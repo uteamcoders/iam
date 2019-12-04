@@ -33,7 +33,7 @@ mkfifo "${statusfile}" || exit 1
 {
   # run tail in the background so that the shell can kill tail when notified 
   # that grep has exited
-  tail -F ${DOMAIN_HOME}/servers/AdminServer/AdminServer.log &
+  tail -F ${DOMAIN_HOME}/servers/AdminServer/logs/AdminServer.log &
 
   # remember tail's PID
   tailpid=$!
