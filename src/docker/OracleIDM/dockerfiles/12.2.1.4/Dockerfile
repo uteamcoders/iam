@@ -94,7 +94,7 @@ ENV DISTR_DIR=distr \
 # Copy files and packages for install
 # -----------------------------------
 ADD  $DISTR_DIR/$FMW_JAR1 $DISTR_DIR/$FMW_JAR2 /u01/
-COPY container-scripts/ /u01/oracle/dockertools/
+COPY --chown=oracle:oracle container-scripts/ /u01/oracle/dockertools/
 RUN  yum install -y hostname &&    \
      rm -rf /var/cache/yum &&      \
      cd /u01 && chmod 755 *.jar && \
