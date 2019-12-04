@@ -68,17 +68,6 @@ setupRCU() {
 }
 
 #==================================================
-updateListenAddress() {
-  mkdir -p ${DOMAIN_HOME}/logs
-
-  export thehost=`hostname -I`
-  echo "INFO: Updating the listen address - ${thehost} ${ADMIN_HOST}"
-  cmd="/u01/oracle/oracle_common/common/bin/wlst.sh -skipWLSModuleScanning /u01/oracle/dockertools/updListenAddress.py $vol_name ${thehost} AdminServer ${ADMIN_HOST}"
-  echo ${cmd}
-  ${cmd} > ${DOMAIN_HOME}/logs/aslisten.log 2>&1
-}
-
-#==================================================
 #== MAIN starts here...
 #==================================================
 trap _int SIGINT
@@ -216,7 +205,7 @@ then
   else
     # https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.4/inoam/configuring-oracle-identity-governance-domain.html#GUID-D97A8D45-C3FD-49DB-BCF5-4372E37BE94F
     cd $ORACLE_HOME/idm/server/bin && ./offlineConfigManager.sh
-    updateListenAddress
+
     # Write the Domain suc file... 
     touch $INSTALL_DOMAIN_DIR/IDM.DOMAINCFG.suc
     echo ${cfgCmd} >> $INSTALL_DOMAIN_DIR/IDM.DOMAINCFG.suc
@@ -235,20 +224,22 @@ fi
 #
 # Creating domain env file
 #=========================
-mkdir -p $DOMAIN_HOME/servers/AdminServer/security $DOMAIN_HOME/servers/${MANAGED_SERVER}/security
 
 #
 # Password less Adminserver starting
 #===================================
+mkdir -p $DOMAIN_HOME/servers/AdminServer/security
 echo "username=weblogic" > $DOMAIN_HOME/servers/AdminServer/security/boot.properties
 echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/servers/AdminServer/security/boot.properties
 
 #
 # Password less Managed Server starting
 #======================================
+mkdir -p $DOMAIN_HOME/servers/soa_server1/security
 echo "username=weblogic" > $DOMAIN_HOME/servers/soa_server1/security/boot.properties
 echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/soa_server1/${MANAGED_SERVER}/security/boot.properties
 
+mkdir -p $DOMAIN_HOME/servers/oim_server1/security
 echo "username=weblogic" > $DOMAIN_HOME/servers/oim_server1/security/boot.properties
 echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/oim_server1/${MANAGED_SERVER}/security/boot.properties
 
