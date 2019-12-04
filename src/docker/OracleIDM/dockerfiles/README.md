@@ -55,7 +55,7 @@ Create an environment file db.env.list
 
     ORACLE_SID=<DB SID>
     ORACLE_PDB=<PDB ID>
-    ORACLE_PWD=<password>
+    ORACLE_PWD=###ADMIN_PASSWORD###
     
 Sample Data will look like this:
 

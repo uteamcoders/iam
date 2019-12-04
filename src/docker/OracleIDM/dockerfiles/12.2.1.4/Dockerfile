@@ -51,6 +51,7 @@ USER oracle
 # Final image stage
 FROM store/oracle/serverjre:8
 ENV ORACLE_HOME=/u01/oracle \
+    MW_HOME=/u01/oracle \
     VOLUME_DIR=/u01/oracle/user_projects \
     SCRIPT_FILE=/u01/oracle/container-scripts/* \
     DOMAIN_NAME="${DOMAIN_NAME:-idm_domain}" \
@@ -76,7 +77,7 @@ RUN mkdir -p /u01 && \
 
 # Copy packages and scripts
 # -------------------------
-COPY container-scripts/* /u01/oracle/container-scripts/
+COPY container-scripts/ /u01/oracle/container-scripts/
 
 COPY --from=builder --chown=oracle:oracle /u01 /u01
 RUN chmod +xr $SCRIPT_FILE
@@ -93,7 +94,7 @@ ENV DISTR_DIR=distr \
 # Copy files and packages for install
 # -----------------------------------
 ADD  $DISTR_DIR/$FMW_JAR1 $DISTR_DIR/$FMW_JAR2 /u01/
-COPY container-scripts/* /u01/oracle/dockertools/
+COPY container-scripts/ /u01/oracle/dockertools/
 RUN  yum install -y hostname &&    \
      rm -rf /var/cache/yum &&      \
      cd /u01 && chmod 755 *.jar && \

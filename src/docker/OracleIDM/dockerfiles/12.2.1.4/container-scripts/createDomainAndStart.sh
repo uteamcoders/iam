@@ -195,27 +195,20 @@ fi
 
 if [ "$CONFIGURE_DOMAIN" = "true" ] 
 then
-  sed -i -e "s|###ADMIN_PASSWORD###|$ADMIN_PASSWORD|g" /u01/IdmDomain.properties
-  sed -i -e "s|###DB_SCHEMA_PASSWORD###|$DB_SCHEMA_PASSWORD|g" /u01/IdmDomain.properties
-  sed -i -e "s|###OIM_HOST###|$OIM_HOST|g" /u01/IdmDomain.properties
-  sed -i -e "s|###SOA_HOST###|$SOA_HOST|g" /u01/IdmDomain.properties
-  sed -i -e "s|###CONNECT_STR###|$CONNECT_STR|g" /u01/IdmDomain.properties
 
-  sed -i -e "s|###ADMIN_PASSWORD###|$ADMIN_PASSWORD|g" /u01/IdmDomain.yaml
-  sed -i -e "s|###DB_SCHEMA_PASSWORD###|$DB_SCHEMA_PASSWORD|g" /u01/IdmDomain.yaml
-  sed -i -e "s|###OIM_HOST###|$OIM_HOST|g" /u01/IdmDomain.yaml
-  sed -i -e "s|###SOA_HOST###|$SOA_HOST|g" /u01/IdmDomain.yaml
-  sed -i -e "s|###CONNECT_STR###|$CONNECT_STR|g" /u01/IdmDomain.yaml
+
   export CONFIG_JVM_ARGS=-DSchemaTypeSystemName=TrustServiceIdentityAsserter
   $ORACLE_HOME/oracle_common/common/bin/prepareCustomProvider.sh -mjf=$ORACLE_HOME/oracle_common/modules/oracle.jps/jps-wls-trustprovider.jar -out $ORACLE_HOME/oracle_common/lib/schematypes/jps-wls-trustprovider.schema.jar
-  cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
-        -oracle_home $ORACLE_HOME \
-        -java_home $JAVA_HOME \
-        -domain_home $DOMAIN_HOME \
-        -domain_type OIM \
-        -model_file /u01/IdmDomain.yaml \
-        -variable_file  /u01/IdmDomain.properties \
-        -archive_file /u01/IdmDomain.zip"
+#  Enable this somehow later to create clusters
+#  cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
+#        -oracle_home $ORACLE_HOME \
+#        -java_home $JAVA_HOME \
+#        -domain_home $DOMAIN_HOME \
+#        -domain_type OIM \
+#        -model_file /u01/IdmDomain.yaml \
+#        -variable_file  /u01/IdmDomain.properties \
+#        -archive_file /u01/IdmDomain.zip"
+  cfgCmd=
   ${cfgCmd}
   retval=$?
 # https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.4/inoam/configuring-oracle-identity-governance-domain.html#GUID-D97A8D45-C3FD-49DB-BCF5-4372E37BE94F

@@ -41,6 +41,8 @@ services:
       - "domainhome:/u01/oracle/user_projects"
     environment:
       - ADMIN_HOST=${ADMIN_HOST}
+      - ADMIN_PORT=${ADMIN_PORT}
+      - ADMIN_USER=${ADMIN_USER}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${ORACLE_PDB}
       - DB_PASSWORD=${ORACLE_PWD}
@@ -48,6 +50,7 @@ services:
       - RCUPREFIX=${RCUPREFIX}
       - OIM_HOST=oim${IDM_INSTANCE}
       - SOA_HOST=soa${IDM_INSTANCE}
+      - KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD}
       - DOMAIN_ROOT=/u01/oracle/user_projects/domains
       - DOMAIN_NAME=idm_domain
     build:
@@ -55,6 +58,7 @@ services:
       args:
         - ADMIN_HOST=${ADMIN_HOST}
         - ADMIN_PORT=${ADMIN_PORT}
+        - ADMIN_USER=${ADMIN_USER}
         - ADMIN_PASSWORD=${ADMIN_PASSWORD}
         - CONNECTION_STRING=${DC_ORCL_HOST}:${DC_ORCL_PORT}/${ORACLE_PDB}
         - DB_PASSWORD=${ORACLE_PWD}
@@ -62,6 +66,7 @@ services:
         - RCUPREFIX=${RCUPREFIX}
         - OIM_HOST=oim${IDM_INSTANCE}
         - SOA_HOST=soa${IDM_INSTANCE}
+        - KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD}
   #
   # The SOA Managed Server
   #
