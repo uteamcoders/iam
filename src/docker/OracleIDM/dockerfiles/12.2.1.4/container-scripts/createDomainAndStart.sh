@@ -236,12 +236,12 @@ echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/servers/AdminServer/security/boo
 # Password less Managed Server starting
 #======================================
 mkdir -p $DOMAIN_HOME/servers/soa_server1/security
-echo "username=weblogic" > $DOMAIN_HOME/servers/soa_server1/security/boot.properties
-echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/soa_server1/${MANAGED_SERVER}/security/boot.properties
+echo "username=weblogic" >         $DOMAIN_HOME/servers/soa_server1/security/boot.properties
+echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/servers/soa_server1/security/boot.properties
 
 mkdir -p $DOMAIN_HOME/servers/oim_server1/security
-echo "username=weblogic" > $DOMAIN_HOME/servers/oim_server1/security/boot.properties
-echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/oim_server1/${MANAGED_SERVER}/security/boot.properties
+echo "username=weblogic" >         $DOMAIN_HOME/servers/oim_server1/security/boot.properties
+echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/servers/oim_server1/security/boot.properties
 
 #
 # Setting env variables

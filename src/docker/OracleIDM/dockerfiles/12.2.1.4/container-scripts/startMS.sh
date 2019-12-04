@@ -54,7 +54,7 @@ mkdir -p ${LOGDIR}
 echo "INFO: Starting the managed server ${MANAGED_SERVER}"
 $DOMAIN_HOME/bin/startManagedWebLogic.sh ${MANAGED_SERVER} "http://"${ADMIN_HOST}:${ADMIN_PORT} > ${LOGFILE} 2>&1 &
 # tail Managed Server log
-tail -f ${LOGFILE} &
+tail -F ${DOMAIN_HOME}/servers/${MANAGED_SERVER}/logs/${MANAGED_SERVER}.log &
 
 childPID=$!
 wait $childPID
