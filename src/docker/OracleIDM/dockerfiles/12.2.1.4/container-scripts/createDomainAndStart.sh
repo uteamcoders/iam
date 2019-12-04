@@ -208,7 +208,7 @@ then
 #        -model_file /u01/IdmDomain.yaml \
 #        -variable_file  /u01/IdmDomain.properties \
 #        -archive_file /u01/IdmDomain.zip"
-  cfgCmd=
+  cfgCmd=/u01/oracle/dockertools/runSetupScripts.sh
   ${cfgCmd}
   retval=$?
 # https://docs.oracle.com/en/middleware/fusion-middleware/12.2.1.4/inoam/configuring-oracle-identity-governance-domain.html#GUID-D97A8D45-C3FD-49DB-BCF5-4372E37BE94F
