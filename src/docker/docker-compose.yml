@@ -40,7 +40,7 @@ services:
     volumes:
       - "domainhome:/u01/oracle/user_projects"
     environment:
-      - ADMIN_HOST="idmas${IDM_INSTANCE}"
+      - ADMIN_HOST=idmas${IDM_INSTANCE}
       - OIM_HOST=oim${IDM_INSTANCE}
       - SOA_HOST=soa${IDM_INSTANCE}
       - ADMIN_PORT=${ADMIN_PORT}
@@ -56,7 +56,7 @@ services:
     build:
       context: ./OracleIDM/dockerfiles/${DC_IDM_VERSION}
       args:
-        - ADMIN_HOST="idmas${IDM_INSTANCE}"
+        - ADMIN_HOST=idmas${IDM_INSTANCE}
         - OIM_HOST=oim${IDM_INSTANCE}
         - SOA_HOST=soa${IDM_INSTANCE}
         - ADMIN_PORT=${ADMIN_PORT}
@@ -81,7 +81,7 @@ services:
       - "8001:8001"
       - "8002:8002"
     environment:
-      - ADMIN_HOST="idmas${IDM_INSTANCE}"
+      - ADMIN_HOST=idmas${IDM_INSTANCE}
       - OIM_HOST=oim${IDM_INSTANCE}
       - SOA_HOST=soa${IDM_INSTANCE}
       - ADMIN_PORT=${ADMIN_PORT}
@@ -101,7 +101,7 @@ services:
     ports:
       - "14000:14000"
     environment:
-      - ADMIN_HOST="idmas${IDM_INSTANCE}"
+      - ADMIN_HOST=idmas${IDM_INSTANCE}
       - OIM_HOST=oim${IDM_INSTANCE}
       - SOA_HOST=soa${IDM_INSTANCE}
       - ADMIN_PORT=${ADMIN_PORT}
