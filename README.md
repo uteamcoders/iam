@@ -20,7 +20,7 @@ For support, bug reporting and feedback about the provided Dockerfiles, please o
 
 ## About UTCoders
 UTCoders provides dedicated teams of IT specialists for software development, DevOps, system integration and identity and access management. Hire us to design, develop, maintain, and support your software products and solutions.
- - [https://utcoders.com](https://utcoders.com/)
+ - [utcoders.com](https://utcoders.com/)
  - [Software Development](https://utcoders.com/software-development/)
  - [Identity and Access Management](https://utcoders.com/identity-management/)
  - [DevOps and SecDevOps](https://utcoders.com/devops/)
