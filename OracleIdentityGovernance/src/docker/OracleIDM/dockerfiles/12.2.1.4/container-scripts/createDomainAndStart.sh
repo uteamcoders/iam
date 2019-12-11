@@ -186,15 +186,6 @@ if [ "$CONFIGURE_DOMAIN" = "true" ]
 then
   export CONFIG_JVM_ARGS=-DSchemaTypeSystemName=TrustServiceIdentityAsserter
   $ORACLE_HOME/oracle_common/common/bin/prepareCustomProvider.sh -mjf=$ORACLE_HOME/oracle_common/modules/oracle.jps/jps-wls-trustprovider.jar -out $ORACLE_HOME/oracle_common/lib/schematypes/jps-wls-trustprovider.schema.jar
-#  Enable this somehow later to create clusters
-#  cfgCmd="/u01/weblogic-deploy/bin/createDomain.sh \
-#        -oracle_home $ORACLE_HOME \
-#        -java_home $JAVA_HOME \
-#        -domain_home $DOMAIN_HOME \
-#        -domain_type OIM \
-#        -model_file /u01/IdmDomain.yaml \
-#        -variable_file  /u01/IdmDomain.properties \
-#        -archive_file /u01/IdmDomain.zip"
   cfgCmd=/u01/oracle/dockertools/runSetupScripts.sh
   ${cfgCmd}
   retval=$?
