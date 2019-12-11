@@ -4,8 +4,11 @@ This repository contains [Dockerfiles](https://docs.docker.com/engine/reference/
 ## Images on GitHub
 These images will require you to download any required Oracle commercial software before installation. 
 
-### Oracle Identity and Access Management
+### Oracle Identity and Access Management Docker images
  - [Oracle Identity Governance](/OracleIdentityGovernance)
+ - Oracle Access Manager
+ - Oracle Unified Directory
+ - Oracle OHS with Webgate
 
 ## Pre-Built Images with Oracle Software
 During docker build you may have to pull the base Oracle images from the following hubs:
