@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<deployment-plan xmlns="http://xmlns.oracle.com/weblogic/deployment-plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/weblogic/deployment-plan http://xmlns.oracle.com/weblogic/deployment-plan/1.0/deployment-plan.xsd">
+  <application-name>oracle.iam.console.identity.sysadmin.ear#V2.0</application-name>
+  <variable-definition>
+    <variable>
+      <name>ResourceDescription_jdbc/applicationDS_ResRefName_15776604066560</name>
+      <value>jdbc/applicationDS</value>
+    </variable>
+    <variable>
+      <name>ResourceDescription_jdbc/ApplicationDBDS_ResRefName_15776604066571</name>
+      <value>jdbc/ApplicationDBDS</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_VerifyUserToken_ServletName_15776604066582</name>
+      <value>VerifyUserToken</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_Faces Servlet_ServletName_15776604066583</name>
+      <value>Faces Servlet</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_resources_ServletName_15776604066594</name>
+      <value>resources</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_BIGRAPHSERVLET_ServletName_15776604066595</name>
+      <value>BIGRAPHSERVLET</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_BIGAUGESERVLET_ServletName_15776604066606</name>
+      <value>BIGAUGESERVLET</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_MapProxyServlet_ServletName_15776604066607</name>
+      <value>MapProxyServlet</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_GatewayServlet_ServletName_15776604066618</name>
+      <value>GatewayServlet</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_adflibResources_ServletName_15776604066629</name>
+      <value>adflibResources</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_adfAuthentication_ServletName_157766040666210</name>
+      <value>adfAuthentication</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_OHW Servlet 1_ServletName_157766040666311</name>
+      <value>OHW Servlet 1</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_logoutPage_ServletName_157766040666312</name>
+      <value>logoutPage</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_jsp_ServletName_157766040666413</name>
+      <value>jsp</value>
+    </variable>
+    <variable>
+      <name>ServletDescriptor_adw_ServletName_157766040666414</name>
+      <value>adw</value>
+    </variable>
+    <variable>
+      <name>SessionDescriptor_TimeoutSecs_157766042181215</name>
+      <value>120</value>
+    </variable>
+  </variable-definition>
+  <module-override>
+    <module-name>oracle.iam.console.identity.sysadmin.ear</module-name>
+    <module-type>ear</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-application</root-element>
+      <uri>META-INF/weblogic-application.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>application</root-element>
+      <uri>META-INF/application.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="true">
+      <root-element>wldf-resource</root-element>
+      <uri>META-INF/weblogic-diagnostics.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>empty.jar</module-name>
+    <module-type>car</module-type>
+    <module-descriptor external="true">
+      <root-element>weblogic-application-client</root-element>
+      <uri>META-INF/weblogic-application-client.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>application-client</root-element>
+      <uri>META-INF/application-client.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>oracle.iam.console.identity.sysadmin.war</module-name>
+    <module-type>war</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-web-app</root-element>
+      <uri>WEB-INF/weblogic.xml</uri>
+      <variable-assignment>
+        <name>ResourceDescription_jdbc/applicationDS_ResRefName_15776604066560</name>
+        <xpath>/weblogic-web-app/resource-description/[res-ref-name="jdbc/applicationDS"]/res-ref-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ResourceDescription_jdbc/ApplicationDBDS_ResRefName_15776604066571</name>
+        <xpath>/weblogic-web-app/resource-description/[res-ref-name="jdbc/ApplicationDBDS"]/res-ref-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_VerifyUserToken_ServletName_15776604066582</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="VerifyUserToken"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_Faces Servlet_ServletName_15776604066583</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="Faces Servlet"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_resources_ServletName_15776604066594</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="resources"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_BIGRAPHSERVLET_ServletName_15776604066595</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="BIGRAPHSERVLET"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_BIGAUGESERVLET_ServletName_15776604066606</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="BIGAUGESERVLET"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_MapProxyServlet_ServletName_15776604066607</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="MapProxyServlet"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_GatewayServlet_ServletName_15776604066618</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="GatewayServlet"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_adflibResources_ServletName_15776604066629</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="adflibResources"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_adfAuthentication_ServletName_157766040666210</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="adfAuthentication"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_OHW Servlet 1_ServletName_157766040666311</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="OHW Servlet 1"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_logoutPage_ServletName_157766040666312</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="logoutPage"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_jsp_ServletName_157766040666413</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="jsp"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+      <variable-assignment>
+        <name>ServletDescriptor_adw_ServletName_157766040666414</name>
+        <xpath>/weblogic-web-app/servlet-descriptor/[servlet-name="adw"]/servlet-name</xpath>
+        <origin>planbased</origin>
+      </variable-assignment>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>web-app</root-element>
+      <uri>WEB-INF/web.xml</uri>
+      <variable-assignment>
+        <name>SessionDescriptor_TimeoutSecs_157766042181215</name>
+        <xpath>/web-app/session-config/session-timeout</xpath>
+        <operation>replace</operation>
+      </variable-assignment>
+    </module-descriptor>
+  </module-override>
+  <config-root>/u01/oracle/idm/server/apps/plan</config-root>
+</deployment-plan>
