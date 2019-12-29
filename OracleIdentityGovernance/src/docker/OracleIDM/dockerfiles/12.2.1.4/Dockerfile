@@ -88,7 +88,8 @@ RUN chmod +xr $SCRIPT_FILE
 USER root
 ENV DISTR_DIR=distr \
     FMW_JAR1=fmw_12.2.1.4.0_idmquickstart.jar \
-    FMW_JAR2=fmw_12.2.1.4.0_idmquickstart2.jar
+    FMW_JAR2=fmw_12.2.1.4.0_idmquickstart2.jar \
+    DBAT_JAR=dbat-12.2.1.3.0.zip
 
 #
 # Copy files and packages for install
@@ -108,6 +109,11 @@ RUN cd /u01 && curl https://github.com/oracle/weblogic-deploy-tooling/releases/d
 RUN cd /u01 && \
   $JAVA_HOME/bin/java -jar /u01/$FMW_JAR1 -silent -responseFile /u01/idm.12.2.1.4.response -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME && \
   rm -fr /u01/*.jar /u01/*.response /u01/*.loc
+
+COPY $DISTR_DIR/$DBAT_JAR /u01/oracle/idm/server/ConnectorDefaultDirectory/
+
+RUN cd /u01/oracle/idm/server/ConnectorDefaultDirectory/ && \
+    unzip /u01/oracle/idm/server/ConnectorDefaultDirectory/$DBAT_JAR
 
 USER root
 RUN  find /u01/ -type f -iname "*.sh" -exec chmod +x {} \;
