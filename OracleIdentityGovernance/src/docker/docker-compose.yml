@@ -108,6 +108,7 @@ services:
       - MANAGED_SERVER=oim_server1
     volumes:
       - "domainhome:/u01/oracle/user_projects"
+      - "${OIM_INSTALL_DIR}:/u01/oracle/install"
   #
   # Volumes
   #

@@ -257,7 +257,7 @@
       },
       {
         "name": "createScript[LOADFROMURL]",
-        "value": "file:///u01/oracle/user_projects/domains/idm_domain/create_user.groovy",
+        "value": "file:///u01/oracle/user_projects/domains/idm_domain/LiferayDB/create_user.groovy",
         "helpText": "Enter the file URL of the Groovy script created for the create user account provisioning operation.",
         "required": false
       },
@@ -293,13 +293,13 @@
       },
       {
         "name": "addMultiValuedAttributeScript[LOADFROMURL]",
-        "value": "file:///u01/oracle/user_projects/domains/idm_domain/add_role.groovy",
+        "value": "file:///u01/oracle/user_projects/domains/idm_domain/LiferayDB/add_role.groovy",
         "helpText": "Enter the file URL of the Groovy script created for the add multivalued attributes provisioning operation.",
         "required": false
       },
       {
         "name": "removeMultiValuedAttributeScript[LOADFROMURL]",
-        "value": "file:///u01/oracle/user_projects/domains/idm_domain/remove_role.groovy",
+        "value": "file:///u01/oracle/user_projects/domains/idm_domain/LiferayDB/remove_role.groovy",
         "helpText": "Enter the file URL of the Groovy script created for the remove multivalued attributes provisioning operation.",
         "required": false
       }
