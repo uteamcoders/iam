@@ -491,7 +491,7 @@
           ]
         },
         "validationScript": "",
-        "transformationScript": ""
+        "transformationScript": "if(STATUS == \"0\"){\n    Status = \"Enabled\";\n}\nelse if(STATUS == \"5\"){\n    Status = \"Disabled\";\n}\nelse {\n    Status = \"Enabled\";\n}\n"
       },
       "form": {
         "name": "UserInfo",
@@ -560,14 +560,15 @@
               "provisionable": true
             },
             {
-              "name": "__ENABLE__",
-              "dataType": "Boolean",
-              "displayName": "status",
-              "length": 1,
+              "name": "STATUS",
+              "dataType": "String",
+              "displayName": "Status",
+              "length": 100,
               "identityAttribute": "Status",
               "keyField": false,
               "keyFieldCaseInsensitive": false,
-              "fieldType": "CheckBox",
+              "required": false,
+              "fieldType": "TextField",
               "reconcileable": true,
               "provisionable": true
             },

@@ -13,7 +13,7 @@ String lastName=attributes.get("LASTNAME")!=null? attributes.get("LASTNAME").get
 String email=attributes.get("EMAILADDRESS")!=null? attributes.get("EMAILADDRESS").getValue().get(0):null;
 String password=attributes.get("PASSWORD")!=null? attributes.get("PASSWORD").getValue().get(0):null;
 joindate = attributes.get("JOININGDATE")!=null? attributes.get("JOININGDATE").getValue().get(0):null;
-enableValue = attributes.get("__ENABLE__")!=null? attributes.get("__ENABLE__").getValue().get(0):true;
+enableValue = attributes.get("STATUS")!=null? attributes.get("STATUS").getValue().get(0):true;
 
 CallableStatement createStmt = null;
 try {
