@@ -239,7 +239,7 @@ echo "password="$ADMIN_PASSWORD >> $DOMAIN_HOME/servers/oim_server1/security/boo
 #=======================
 echo ". $DOMAIN_HOME/bin/setDomainEnv.sh" >> /u01/oracle/.bashrc
 echo "export PATH=$PATH:/u01/oracle/common/bin:$DOMAIN_HOME/bin" >> /u01/oracle/.bashrc
-
+cp /u01/uteamcoders-idm.png /u01/oracle/idm/server/apps/oim.ear/iam-consoles-faces.war/images/uteamcoders-idm.png
 # Now we start the Admin server in this container... 
 /u01/oracle/dockertools/startAS.sh
 
