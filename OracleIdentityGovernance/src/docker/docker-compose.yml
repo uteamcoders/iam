@@ -121,6 +121,17 @@ services:
     ports:
       - "${OHS_LISTEN_PORT}:${OHS_LISTEN_PORT}"
       - "${OHS_SSL_PORT}:${OHS_SSL_PORT}"
+    build:
+      context: ./OracleHTTPServer/dockerfiles/${DC_OHS_VERSION}
+      args:
+        - ADMIN_HOST=idmas${IDM_INSTANCE}
+        - OIM_HOST=oim${IDM_INSTANCE}
+        - SOA_HOST=soa${IDM_INSTANCE}
+        - OHS_PASSWORD=${OHS_PASSWORD}
+        - OHS_LISTEN_PORT=${OHS_LISTEN_PORT}
+        - OHS_SSL_PORT=${OHS_SSL_PORT}
+        - OHS_COMPONENT_NAME=${OHS_COMPONENT_NAME}
+        - DOMAIN_NAME=${OHS_DOMAIN_NAME}
     environment:
       - ADMIN_HOST=idmas${IDM_INSTANCE}
       - OIM_HOST=oim${IDM_INSTANCE}
