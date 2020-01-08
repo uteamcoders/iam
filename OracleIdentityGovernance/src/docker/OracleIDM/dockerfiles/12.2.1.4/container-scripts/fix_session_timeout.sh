@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-echo "Usage: fix_session_timeout.sh OIM_API_URL OIM_API_USER PASSWORD"
+echo "Usage: fix_session_timeout.sh WEBLOGIC_API_URL WEBLOGIC_API_USER PASSWORD"
 cp -R /u01/iam-self-service.Plan.xml /u01/oracle/user_projects/domains/idm_domain
 cp -R /u01/iam-sysadmin.Plan.xml /u01/oracle/user_projects/domains/idm_domain
 
