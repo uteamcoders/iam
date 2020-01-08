@@ -74,6 +74,11 @@ RUN yum install -y unzip libaio sysstat make psmisc gcc && \
     mkdir /u01/oracle/.inventory /u01/oracle/bootdir && \
     chown oracle:oracle -R /u01 
 
+# Copy required files to build this image
+# ------------------------------------------------------
+COPY --chown oracle container-scripts/* /u01/oracle/container-scripts/
+RUN chmod +x /u01/oracle/container-scripts/*.sh
+
 # Go to /u01 as user 'oracle' to proceed with OHS installation
 #--------------------------------------------------------
 USER oracle
@@ -82,9 +87,6 @@ RUN cd /u01 && unzip -q /u01/$OHS_PKG && cd - && \
     rm /u01/$OHS_BIN  /u01/oraInst.loc /u01/install.file && \
     mkdir /u01/oracle/container-scripts/ /u01/oracle/logs 
 
-# Copy required files to build this image
-# ------------------------------------------------------
-COPY container-scripts/* /u01/oracle/container-scripts/
 
 #Expose all Ports
 EXPOSE $OHS_SSL_PORT $OHS_LISTEN_PORT $NM_PORT
