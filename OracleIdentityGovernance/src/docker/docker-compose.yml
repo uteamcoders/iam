@@ -110,6 +110,29 @@ services:
       - "domainhome:/u01/oracle/user_projects"
       - "${OIM_INSTALL_DIR}:/u01/oracle/install"
   #
+  # The OHS frontend server
+  #
+  ohs:
+    image: oracle/ohs:${DC_OHS_VERSION}
+    container_name: "ohs${IDM_INSTANCE}"
+    hostname: "ohs${IDM_INSTANCE}"
+    depends_on:
+      - "oim"
+    ports:
+      - "${OHS_LISTEN_PORT}:${OHS_LISTEN_PORT}"
+      - "${OHS_SSL_PORT}:${OHS_SSL_PORT}"
+    environment:
+      - ADMIN_HOST=idmas${IDM_INSTANCE}
+      - OIM_HOST=oim${IDM_INSTANCE}
+      - SOA_HOST=soa${IDM_INSTANCE}
+      - OHS_PASSWORD=${OHS_PASSWORD}
+      - OHS_LISTEN_PORT=${OHS_LISTEN_PORT}
+      - OHS_SSL_PORT=${OHS_SSL_PORT}
+      - OHS_COMPONENT_NAME=${OHS_COMPONENT_NAME}
+      - DOMAIN_NAME=${OHS_DOMAIN_NAME}
+    volumes:
+      - ./ohs:/u01/oracle/bootdir
+  #
   # Volumes
   #
 
