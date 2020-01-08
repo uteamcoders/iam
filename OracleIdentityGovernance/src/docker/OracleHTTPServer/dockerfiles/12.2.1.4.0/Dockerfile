@@ -76,7 +76,7 @@ RUN yum install -y unzip libaio sysstat make psmisc gcc && \
 
 # Copy required files to build this image
 # ------------------------------------------------------
-COPY --chown oracle container-scripts/* /u01/oracle/container-scripts/
+COPY --chown=oracle container-scripts/* /u01/oracle/container-scripts/
 RUN chmod +x /u01/oracle/container-scripts/*.sh
 
 # Go to /u01 as user 'oracle' to proceed with OHS installation
