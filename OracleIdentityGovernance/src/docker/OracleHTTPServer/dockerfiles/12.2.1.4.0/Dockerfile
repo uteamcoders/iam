@@ -7,17 +7,17 @@
 #
 # ORACLE HTTP Server DOCKERFILES PROJECT
 # -----------------------------------------
-# This is the DockerFile for Oracle HTTP Server 12.2.1.3.0
+# This is the DockerFile for Oracle HTTP Server 12.2.1.4.0
 #
 # IMPORTANT
 # -------------------------------------------
-# The resulting image of this Dockerfile would have Oracle Linux 7 and Oracle HTTP Server 12.2.1.3.0 installed in standalone mode.
+# The resulting image of this Dockerfile would have Oracle Linux 7 and Oracle HTTP Server 12.2.1.4.0 installed in standalone mode.
 
 # A standalone domain will be configured in this image
 #
 # REQUIRED FILES TO BUILD THIS IMAGE
 # ----------------------------------
-# (1) fmw_12.2.1.3.0_ohs_linux64_Disk1_1of1.zip
+# (1) fmw_12.2.1.4.0_ohs_linux64_Disk1_1of1.zip
 #     Download from http://www.oracle.com/technetwork/middleware/webtier/downloads/index-jsp-156711.html
 #
 # HOW TO BUILD THIS IMAGE
@@ -25,7 +25,7 @@
 # Put all downloaded files in the same directory as this Dockerfile
 # As root user run following command manually:
 #
-#     $ sh buildDockerImage.sh -v 12.2.1.3.0
+#     $ sh buildDockerImage.sh -v 12.2.1.4.0
 #
 # Alternatively you can also run
 # 
@@ -33,11 +33,11 @@
 #
 # For example
 # 
-#     $ docker build --force-rm=true --no-cache=true --rm=true -t oracle/ohs:12.2.1.3.0 .
+#     $ docker build --force-rm=true --no-cache=true --rm=true -t oracle/ohs:12.2.1.4.0 .
 #
 # Pull serverjre:8 base image
 # -----------------------------------
-FROM oracle/serverjre:8
+FROM store/oracle/serverjre:8
 
 # Maintainer
 # ------------------------------------
@@ -45,8 +45,8 @@ MAINTAINER Prabhat Kishore <prabhat.kishore@oracle.com>
 
 # Environment variables required for this build (do NOT change)
 # ----------------------------------------------
-ENV OHS_PKG=fmw_12.2.1.3.0_ohs_linux64_Disk1_1of1.zip \
-    OHS_BIN=fmw_12.2.1.3.0_ohs_linux64.bin \
+ENV OHS_PKG=fmw_12.2.1.4.0_ohs_linux64_Disk1_1of1.zip \
+    OHS_BIN=fmw_12.2.1.4.0_ohs_linux64.bin \
     ORACLE_HOME=/u01/oracle/ohssa \
     PATH=$PATH:/usr/java/default/bin:/u01/oracle/ohssa/oracle_common/common/bin \
     NM_PORT=5556 \
