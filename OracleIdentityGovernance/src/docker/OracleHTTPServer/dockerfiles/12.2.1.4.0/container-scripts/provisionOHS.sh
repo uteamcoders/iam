@@ -129,6 +129,15 @@ mkfifo "${statusfile}" || exit 1
 # clean up temporary files
 rm "${statusfile}"
 
+
+
+#Start OHS component only if Node Manager is up
+if [ -f /u01/oracle/logs/Nodemanage$$.status ]; then
+echo "Node manager running, hence starting OHS server"
+${WLST_HOME}/wlst.sh -loadProperties $PROPERTIES_FILE /u01/oracle/container-scripts/start-ohs.py
+echo "OHS server has been started "
+fi
+
 #Check if configureWLSProxyPlugin.sh needs to be invoked
 if [ -f /u01/oracle/custom-config/custom_mod_wl_ohs.conf ]; then
 configureWLSProxyPlugin.sh
@@ -143,13 +152,6 @@ cp /u01/oracle/custom-config/custom_ssl.conf $INSTANCE_CONFIG_HOME/ssl.conf
 fi
 
 configureSSLCert.sh
-
-#Start OHS component only if Node Manager is up
-if [ -f /u01/oracle/logs/Nodemanage$$.status ]; then
-echo "Node manager running, hence starting OHS server"
-${WLST_HOME}/wlst.sh -loadProperties $PROPERTIES_FILE /u01/oracle/container-scripts/start-ohs.py
-echo "OHS server has been started "
-fi
 
 #Tail all server logs
 tail -f ${DOMAIN_HOME}/nodemanager/nodemanager.log ${DOMAIN_HOME}/servers/*/logs/*.log &
