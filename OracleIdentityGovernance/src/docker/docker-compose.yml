@@ -132,6 +132,7 @@ services:
         - OHS_SSL_PORT=${OHS_SSL_PORT}
         - OHS_COMPONENT_NAME=${OHS_COMPONENT_NAME}
         - DOMAIN_NAME=${OHS_DOMAIN_NAME}
+        - OHS_SSL_CERT=${OHS_SSL_CERT}
     environment:
       - ADMIN_HOST=idmas${IDM_INSTANCE}
       - OIM_HOST=oim${IDM_INSTANCE}
@@ -141,8 +142,9 @@ services:
       - OHS_SSL_PORT=${OHS_SSL_PORT}
       - OHS_COMPONENT_NAME=${OHS_COMPONENT_NAME}
       - DOMAIN_NAME=${OHS_DOMAIN_NAME}
+      - OHS_SSL_CERT=${OHS_SSL_CERT}
     volumes:
-      - ./ohs:/u01/oracle/bootdir
+      - ${OHS_BOOT_DIR}:/u01/oracle/bootdir
   #
   # Volumes
   #

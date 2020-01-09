@@ -45,4 +45,5 @@ cd ${INSTANCE_CONFIG_HOME}
 mv mod_wl_ohs.conf mod_wl_ohs.conf.ORIGINAL
 echo "Copying ${modwlsconfigfile} to ${INSTANCE_CONFIG_HOME} "
 cp ${modwlsconfigfile} ${INSTANCE_CONFIG_HOME}/mod_wl_ohs.conf
+/u01/oracle/container-scripts/replace_vars.sh ${INSTANCE_CONFIG_HOME}/mod_wl_ohs.conf
 fi

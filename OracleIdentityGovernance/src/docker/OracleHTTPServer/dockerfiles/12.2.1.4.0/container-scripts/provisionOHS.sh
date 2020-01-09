@@ -100,8 +100,6 @@ wlst.sh -skipWLSModuleScanning -loadProperties $PROPERTIES_FILE /u01/oracle/cont
 # Set the NM username and password in the properties file
 echo "username=$NM_USER" >> /u01/oracle/ohssa/user_projects/domains/ohsDomain/config/nodemanager/nm_password.properties
 echo "password=$NM_PASSWORD" >> /u01/oracle/ohssa/user_projects/domains/ohsDomain/config/nodemanager/nm_password.properties
-mv /u01/oracle/container-scripts/helloWorld.html ${ORACLE_HOME}/user_projects/domains/ohsDomain/config/fmwconfig/components/OHS/ohs1/htdocs/helloWorld.html
-
 fi
 
 # Start node manager
@@ -134,6 +132,8 @@ rm "${statusfile}"
 if [ -f /config/custom_mod_wl_ohs.conf ]; then
 configureWLSProxyPlugin.sh
 fi
+
+configureSSLCert.sh
 
 #Start OHS component only if Node Manager is up
 if [ -f /u01/oracle/logs/Nodemanage$$.status ]; then
