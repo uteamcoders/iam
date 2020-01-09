@@ -129,8 +129,16 @@ mkfifo "${statusfile}" || exit 1
 rm "${statusfile}"
 
 #Check if configureWLSProxyPlugin.sh needs to be invoked
-if [ -f /config/custom_mod_wl_ohs.conf ]; then
+if [ -f /u01/oracle/custom-config/custom_mod_wl_ohs.conf ]; then
 configureWLSProxyPlugin.sh
+fi
+
+if [ -f /u01/oracle/custom-config/custom_ssl.conf ]; then
+INSTANCE_CONFIG_HOME=$DOMAIN_HOME/config/fmwconfig/components/OHS/instances/${OHS_COMPONENT_NAME}
+export INSTANCE_CONFIG_HOME
+echo "INSTANCE_CONFIG_DIR=${INSTANCE_CONFIG_HOME}"
+cp /u01/oracle/custom-config/custom_ssl.conf $INSTANCE_CONFIG_HOME/ssl.conf
+/u01/oracle/container-scripts/replace_vars.sh ${INSTANCE_CONFIG_HOME}/ssl.conf
 fi
 
 configureSSLCert.sh
