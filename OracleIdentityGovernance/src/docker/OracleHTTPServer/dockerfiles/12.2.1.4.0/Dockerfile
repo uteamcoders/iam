@@ -88,6 +88,11 @@ RUN cd /u01 && unzip -q /u01/$OHS_PKG && cd - && \
     rm /u01/$OHS_BIN  /u01/oraInst.loc /u01/install.file && \
     mkdir /u01/oracle/logs
 
+USER root
+RUN chown root /u01/oracle/ohssa/ohs/bin/launch && chmod 4750 /u01/oracle/ohssa/ohs/bin/launch
+
+USER oracle
+
 
 #Expose all Ports
 EXPOSE $OHS_SSL_PORT $OHS_LISTEN_PORT $NM_PORT
