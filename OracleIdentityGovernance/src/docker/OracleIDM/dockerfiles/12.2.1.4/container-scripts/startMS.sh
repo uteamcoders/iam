@@ -49,6 +49,7 @@ export vol_name=u01
 LOGDIR=${DOMAIN_HOME}/logs
 LOGFILE=${LOGDIR}/${MANAGED_SERVER}.log
 mkdir -p ${LOGDIR}
+cp /u01/uteamcoders-idm.png /u01/oracle/idm/server/apps/oim.ear/iam-consoles-faces.war/images/uteamcoders-idm.png
 
 # Start Managed server
 echo "INFO: Starting the managed server ${MANAGED_SERVER}"
