@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 # Author: hemastuti.baruah@oracle.com
 #
 # Copyright (c) 2016-2019 Oracle and/or its affiliates. All rights reserved.

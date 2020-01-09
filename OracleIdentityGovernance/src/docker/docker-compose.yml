@@ -125,6 +125,7 @@ services:
       context: ./OracleHTTPServer/dockerfiles/${DC_OHS_VERSION}
       args:
         - ADMIN_HOST=idmas${IDM_INSTANCE}
+        - ADMIN_PORT=${ADMIN_PORT}
         - OIM_HOST=oim${IDM_INSTANCE}
         - SOA_HOST=soa${IDM_INSTANCE}
         - OHS_PASSWORD=${OHS_PASSWORD}
@@ -135,6 +136,7 @@ services:
         - OHS_SSL_CERT=${OHS_SSL_CERT}
     environment:
       - ADMIN_HOST=idmas${IDM_INSTANCE}
+      - ADMIN_PORT=${ADMIN_PORT}
       - OIM_HOST=oim${IDM_INSTANCE}
       - SOA_HOST=soa${IDM_INSTANCE}
       - OHS_PASSWORD=${OHS_PASSWORD}
